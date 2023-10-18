@@ -13,7 +13,7 @@ export default function Tasks() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#839deb',
       alignItems: 'center',
       justifyContent: 'center',
     },
