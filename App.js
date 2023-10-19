@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from './src/pags/Login';
 import Tasks from './src/pags/Tasks';
+import Cadastro from './src/pags/cadastro';
 
 export default function App() {
 
@@ -27,6 +28,13 @@ export default function App() {
             headerShown: false,
           }}
          />
+        <Stack.Screen
+          name='Cadastro'
+          component={Cadastro}
+          options={{
+            headerShown: false
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

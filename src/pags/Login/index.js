@@ -2,24 +2,31 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons} from 'react-native-vector-icons'
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
+import firebase from './firebase';
 
 export default function Login() {
+ const auth = getAuth();
 
- const [Usuario, setUsuario] = useState("")
+ const [Email, setEmail] = useState('')
  const [Senha, setSenha] = useState('')
  const [VerSenha, setVerSenha] = useState(false)
  const logo = require('../../../assets/logo.png');
  const navigation = useNavigation();
  const [ColorBtn, setColorBtn] = useState("#334f7c")
 
- function fazerLogin(){
-  if(Usuario === "@kwlg" && Senha === "@MaryFofoqueira"){
+ async function fazerLogin(){
+  signInWithEmailAndPassword(auth, Email, Senha)
+  .then((user) => {
     setColorBtn("#334f7c")
     navigation.navigate('Tasks')
-  } else {
-    setColorBtn("#ff0000")
-  }
+  })
+  .catch((error) => {
+    setColorBtn('#ff0000')
+  })
  }
+
  return (
    <View style={styles.container}>
      <StatusBar backgroundColor="#839deb" />
@@ -31,7 +38,7 @@ export default function Login() {
          placeholderTextColor="#fff"
          style={styles.Input}
          placeholder="Usuario"
-         onChangeText={(text) => setUsuario(text)}
+         onChangeText={(text) => setEmail(text)}
        />
 
        <Text style={styles.Text}>Senha</Text>
@@ -57,6 +64,11 @@ export default function Login() {
          <Text style={{color: '#fff'}}>Login</Text>
        </TouchableOpacity>
      </View>
+     <TouchableOpacity
+     onPress={() => navigation.navigate('Cadastro')}
+     >
+      <Text style={styles.TextCadastro}>Não possui conta? cadastre-se</Text>
+     </TouchableOpacity>
    </View>
  );
 }
@@ -101,5 +113,9 @@ const styles = StyleSheet.create({
   Icon: {
     marginTop: 4,
     marginLeft: -34,
+  },
+  TextCadastro: {
+    color: '#1d44b8',
+    marginTop: 20
   }
 });
