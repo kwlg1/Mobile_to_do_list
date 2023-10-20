@@ -1,18 +1,37 @@
 import React, {useState} from 'react';
 import { Ionicons} from 'react-native-vector-icons'
-import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
+import firebase from '../firebase';
 
 export default function Cadastro() {
 
     const logo = require('../../../assets/logo.png')
-    const [VerSenha, setVerSenha] = useState(false)
+    const [VerSenha, setVerSenha] = useState(true)
     const [ColorBtn, setColorBtn] = useState("#334f7c")
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [ConfirmarSenha, setConfirmarSenha] = useState('')
+
+    function fazerCadastro(){
+      if(senha === ConfirmarSenha){
+        firebase.auth().createUserWithEmailAndPassword(email, senha)
+        .then((value) => {
+          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}`)
+        })
+        .catch((error) => {
+          Alert.alert("Erro", `algo deu errado, confirme os dados e tente novamente`)
+        })
+      } else {
+        Alert.alert("Erro", "As senhas precisam ser iguais!")
+      }
+
+    }
+
     return (
         <View style={styles.container}>
           <StatusBar backgroundColor="#839deb" />
           <View>
             <Image style={styles.logo} source={logo}></Image>
-            <Text style={[styles.Text, {fontSize: 20, textAlign: 'center', marginBottom: 45}]}>{`Insira seu email e senha \npara realizar seu cadastro`}</Text>
             <Text style={styles.Text}>Email</Text>
             <TextInput
               placeholderTextColor="#fff"
@@ -46,7 +65,7 @@ export default function Cadastro() {
                 placeholderTextColor="#fff"
                 style={styles.Input}
                 placeholder="Senha"
-                onChangeText={(text) => setSenha(text)}
+                onChangeText={(text) => setConfirmarSenha(text)}
               />
               <TouchableOpacity
                style={styles.Icon} 
@@ -59,7 +78,7 @@ export default function Cadastro() {
 
             <TouchableOpacity 
             style={[styles.btn, {backgroundColor: ColorBtn}]}
-            onPress={()=> fazerLogin()}
+            onPress={()=> fazerCadastro()}
             >
               <Text style={{color: '#fff'}}>Fazer cadastro</Text>
             </TouchableOpacity>

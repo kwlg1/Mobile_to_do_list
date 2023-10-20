@@ -2,29 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons} from 'react-native-vector-icons'
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-
-import firebase from './firebase';
+import firebase from '../firebase'
 
 export default function Login() {
- const auth = getAuth();
 
- const [Email, setEmail] = useState('')
- const [Senha, setSenha] = useState('')
- const [VerSenha, setVerSenha] = useState(false)
+
+ const [Email, setEmail] = useState('');
+ const [Senha, setSenha] = useState('');
+ const [VerSenha, setVerSenha] = useState(true);
+ const [ColorBtn, setColorBtn] = useState('#334f7c');
  const logo = require('../../../assets/logo.png');
  const navigation = useNavigation();
- const [ColorBtn, setColorBtn] = useState("#334f7c")
 
- async function fazerLogin(){
-  signInWithEmailAndPassword(auth, Email, Senha)
-  .then((user) => {
-    setColorBtn("#334f7c")
-    navigation.navigate('Tasks')
-  })
-  .catch((error) => {
-    setColorBtn('#ff0000')
-  })
+  async function fazerLogin(){
+    await firebase.auth().signInWithEmailAndPassword(Email, Senha)
+    .then((value) => {
+      navigation.navigate("Tasks")
+    })
+    .catch((error) => {
+      alert('Deu merda')
+    })  
  }
 
  return (
@@ -52,7 +49,7 @@ export default function Login() {
          />
          <TouchableOpacity
           style={styles.Icon} 
-          onPress={() => setVerSenha(!VerSenha)}
+          onPress={() => setVerSenha(VerSenha)}
          >
           <Ionicons name={VerSenha === true? 'eye': 'eye-off'} color='#fff' size={25}/>
          </TouchableOpacity>
