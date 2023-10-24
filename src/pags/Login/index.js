@@ -17,10 +17,15 @@ export default function Login() {
   async function fazerLogin(){
     await firebase.auth().signInWithEmailAndPassword(Email, Senha)
     .then((value) => {
+      User = value.user.email;
+      setColorBtn('#334f7c')
       navigation.navigate("Tasks")
+      setEmail('')
+      setSenha('')
     })
     .catch((error) => {
-      alert('Deu merda')
+      setColorBtn("#A72836")
+      Alert.alert("Erro", `Email ou senha incorreto!`)
     })  
  }
 
@@ -30,28 +35,30 @@ export default function Login() {
      <View>
        <Image style={styles.logo} source={logo}></Image>
 
-       <Text style={styles.Text}>Usuario</Text>
+       <Text style={styles.Text}>Email</Text>
        <TextInput
-         placeholderTextColor="#fff"
+         placeholderTextColor={ColorBtn}
          style={styles.Input}
-         placeholder="Usuario"
+         placeholder="Email"
          onChangeText={(text) => setEmail(text)}
+         value={Email}
        />
 
        <Text style={styles.Text}>Senha</Text>
        <View style={{ flexDirection: "row" }}>
          <TextInput
            secureTextEntry={VerSenha}
-           placeholderTextColor="#fff"
+           placeholderTextColor={ColorBtn}
            style={styles.Input}
            placeholder="Senha"
            onChangeText={(text) => setSenha(text)}
+           value={Senha}
          />
          <TouchableOpacity
           style={styles.Icon} 
-          onPress={() => setVerSenha(VerSenha)}
+          onPress={() => setVerSenha(!VerSenha)}
          >
-          <Ionicons name={VerSenha === true? 'eye': 'eye-off'} color='#fff' size={25}/>
+          <Ionicons name={VerSenha === true? 'eye': 'eye-off'} color='#334f7c' size={35}/>
          </TouchableOpacity>
        </View>
        <TouchableOpacity 
@@ -69,6 +76,8 @@ export default function Login() {
    </View>
  );
 }
+
+export var User = '';
 
 const styles = StyleSheet.create({
   container: {
@@ -91,8 +100,8 @@ const styles = StyleSheet.create({
   Input: {
     backgroundColor: '#b6b9b4',
     width: 280,
-    height: 34,
-    paddingLeft: 10,
+    height: 50,
+    padding: 10,
     paddingRight: 55,
     borderRadius: 10,
     borderWidth: 2,
@@ -102,17 +111,18 @@ const styles = StyleSheet.create({
   btn: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
+    width: 120,
     height: 45,
-    marginLeft: 90,
+    marginLeft: 80,
     borderRadius: 18,
+    marginTop: 20,
   },
   Icon: {
-    marginTop: 4,
-    marginLeft: -34,
+    marginTop: 6,
+    marginLeft: -44,
   },
   TextCadastro: {
     color: '#1d44b8',
-    marginTop: 20
+    marginTop: 20,
   }
 });
