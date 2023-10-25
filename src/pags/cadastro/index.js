@@ -1,34 +1,52 @@
 import React, {useState} from 'react';
-import { Ionicons} from 'react-native-vector-icons'
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Feather, Ionicons } from 'react-native-vector-icons';
+import { User } from '../Login/index';
 import firebase from '../firebase';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Cadastro(props) {
+export default function Cadastro() {
     
-    const logo = require('../../../assets/logo.png')
-    const [VerSenha, setVerSenha] = useState(true)
-    const [VerConfirmarSenha, setVerConfirmarSenha] = useState(true)
-    const [ColorBtn, setColorBtn] = useState("#334f7c")
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [ConfirmarSenha, setConfirmarSenha] = useState('')
+    const index = User.indexOf('@');
+    const nome = User.slice(0,index);
+    const logo = require('../../../assets/logo.png');
+    const [VerSenha, setVerSenha] = useState(true);
+    const [VerConfirmarSenha, setVerConfirmarSenha] = useState(true);
+    const [ColorBtn, setColorBtn] = useState("#334f7c");
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [ConfirmarSenha, setConfirmarSenha] = useState('');
+    const navigation = useNavigation();
 
     function fazerCadastro(){
       if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){
         firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then((value) => {
           setColorBtn('#334f7c')
-          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}`)
+          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}` [
+            {
+              text:"Ok",
+              onPress: () => {navigation.navigate('Login')}
+            }
+          ])
           setEmail('')
           setSenha('')
           setConfirmarSenha('')
         })
         .catch((error) => {
           setColorBtn('#a72836')
-          Alert.alert("Erro", `algo deu errado, confirme os dados e tente novamente`)
+          if( error.code === 'auth/weak-password'){
+            Alert.alert('Senha', 'sua senha precisar ter pelo menos 6 caracteres.')
+          } 
+          if (error.code === 'auth/invalid-email'){
+            Alert.alert('Email', 'Email incorreto!')
+          }
+          if(error.code === 'auth/email-already-in-use' ){
+            Alert.alert('email', 'O endereço de email digitado já está cadastrado!')
+          }
         })  
       } else if(email === "" && senha === "" && ConfirmarSenha === ""){
-        setColorBtn('#a72836d')
+        setColorBtn('#a72836')
         Alert.alert('Dados não Inseridos', 'Você não inseriu os dados, insira os daods e tente novamente!')
       } else {
         setColorBtn('#a72836')
@@ -53,7 +71,7 @@ export default function Cadastro(props) {
             <Text style={styles.Text}>Senha</Text>
             <View style={{ flexDirection: "row" }}>
               <TextInput
-                secureTextEntry={VerSenha}
+                secureTextEntry={VerSenha[0]}
                 placeholderTextColor={ColorBtn}
                 style={styles.Input}
                 placeholder="Senha"
@@ -71,7 +89,7 @@ export default function Cadastro(props) {
             <Text style={styles.Text}>Confirmar senha</Text>
             <View style={{ flexDirection: "row" }}>
               <TextInput
-                secureTextEntry={VerConfirmarSenha}
+                secureTextEntry={VerSenha[0]}
                 placeholderTextColor={ColorBtn}
                 style={styles.Input}
                 placeholder="Senha"
@@ -93,7 +111,12 @@ export default function Cadastro(props) {
               <Text style={{color: '#fff'}}>Fazer cadastro</Text>
             </TouchableOpacity>
           </View>
-          <Text></Text>
+          <TouchableOpacity
+            style={styles.SairCadastro}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Feather name='log-out' color='#344f7c' size={42} />   
+          </TouchableOpacity>
         </View>
       );
 }
@@ -138,5 +161,10 @@ const styles = StyleSheet.create({
     Icon: {
       marginTop: 6,
       marginLeft: -44,
+    },
+    SairCadastro: {
+      position: 'absolute',
+      top: 12,
+      left: 12,
     }
   });

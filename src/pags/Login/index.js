@@ -9,6 +9,7 @@ export default function Login() {
 
  const [Email, setEmail] = useState('');
  const [Senha, setSenha] = useState('');
+ const [user, setuser] = useState('')
  const [VerSenha, setVerSenha] = useState(true);
  const [ColorBtn, setColorBtn] = useState('#334f7c');
  const logo = require('../../../assets/logo.png');
@@ -17,6 +18,7 @@ export default function Login() {
   async function fazerLogin(){
     await firebase.auth().signInWithEmailAndPassword(Email, Senha)
     .then((value) => {
+      //setuser(value.user.email)
       User = value.user.email;
       setColorBtn('#334f7c')
       navigation.navigate("Tasks")

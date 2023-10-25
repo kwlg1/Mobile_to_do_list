@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather, Ionicons } from 'react-native-vector-icons';
 import { User } from '../Login/index';
 import firebase from '../firebase';
 export default function Tasks() {
-    const user = User;
+    const index = User.indexOf('@');
+    const nome = User.slice(0,index)
+    const [opcao, setOpcao] = useState(false);
+    const [Task, setTask] = useState([])
     const navigation = useNavigation();
-    const [opcao, setOpcao] = useState('')
+    
+    if(opcao === true){
+        firebase.auth().signOut(User)
+        .then(() => {
+            navigation.navigate('Login')
+        })
+        .catch((error) => {
+            console.log("Error signing out", error);
+        })
+    }
+
     function LogOut(){    
         Alert.alert('Sign Out', 'Você deseja mesmo fazer sign Out', [
             {
@@ -19,22 +32,20 @@ export default function Tasks() {
                 onPress: () => setOpcao(true)
             }
         ])
-        if(opcao == true){
-            firebase.auth().signOut(user)
-            .then(() => {
-                navigation.navigate('Login')
-            })
-            .catch((error) => {
-                console.log("Error signing out", error);
-        })            
-        }
+
     }
+
+    useEffect(() => {
+        firebase.database().ref(`User/${nome}/tasks`).on( 'value', (snapshot) => {
+            alert(snapshot.val())
+        })
+    },[])
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#344f7c'/> 
             <View style={styles.User}>
                 <Feather name='user' color='#fff' size={60} />
-                <Text style={styles.TextUser}>{user}</Text>
+                <Text style={styles.TextUser}>{nome}</Text>
                 <TouchableOpacity
                     style={styles.logOut} 
                     onPress={() => LogOut()}
