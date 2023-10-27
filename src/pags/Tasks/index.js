@@ -34,19 +34,13 @@ export default function Tasks() {
     }
 
     useEffect(() => {
-        const tasks = firebase.database().ref(`User/${nome}`).on('value', (snapshot) => {
-            setTask(tasks)
-            alert(Task)
-        })((error) => {
-            console.log(error)
-        })
     },[])
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#344f7c'/> 
             <View style={styles.User}>
                 <Feather name='user' color='#fff' size={60} />
-                <Text style={styles.TextUser}>{nome}</Text>
+                <Text style={styles.TextUser}>{User}</Text>
                 <TouchableOpacity
                     style={styles.logOut} 
                     onPress={() => LogOut()}
