@@ -7,31 +7,29 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Cadastro() {
     
-    const index = User.indexOf('@');
-    const nome = User.slice(0,index);
     const logo = require('../../../assets/logo.png');
-    const [VerSenha, setVerSenha] = useState(true);
-    const [VerConfirmarSenha, setVerConfirmarSenha] = useState(true);
+    const [VerSenha, setVerSenha] = useState([true, true]);
     const [ColorBtn, setColorBtn] = useState("#334f7c");
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [ConfirmarSenha, setConfirmarSenha] = useState('');
     const navigation = useNavigation();
 
-    function fazerCadastro(){
+    async function CriarBanco(){
+      const index = email.indexOf('@')
+      const nome = email.slice(0, index)
+      await firebase.database().ref(`User`).set(`${nome}`)
+    } 
+     async function fazerCadastro(){
       if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){
-        firebase.auth().createUserWithEmailAndPassword(email, senha)
+        await firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then((value) => {
           setColorBtn('#334f7c')
-          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}` [
-            {
-              text:"Ok",
-              onPress: () => {navigation.navigate('Login')}
-            }
-          ])
+          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}`)
           setEmail('')
           setSenha('')
-          setConfirmarSenha('')
+          setConfirmarSenha('') 
+          navigation.navigate('Login');
         })
         .catch((error) => {
           setColorBtn('#a72836')
@@ -79,9 +77,9 @@ export default function Cadastro() {
               />
               <TouchableOpacity
                style={styles.Icon} 
-               onPress={() => setVerSenha(!VerSenha)}
+               onPress={() => setVerSenha([!VerSenha[0], VerSenha[1]])}
               >
-               <Ionicons name={VerSenha === true? 'eye': 'eye-off'} color='#344f7c' size={35}/>
+               <Ionicons name={VerSenha[0] === true? 'eye': 'eye-off'} color='#344f7c' size={35}/>
               </TouchableOpacity>
               
             </View>
@@ -89,7 +87,7 @@ export default function Cadastro() {
             <Text style={styles.Text}>Confirmar senha</Text>
             <View style={{ flexDirection: "row" }}>
               <TextInput
-                secureTextEntry={VerSenha[0]}
+                secureTextEntry={VerSenha[1]}
                 placeholderTextColor={ColorBtn}
                 style={styles.Input}
                 placeholder="Senha"
@@ -97,9 +95,9 @@ export default function Cadastro() {
               />
               <TouchableOpacity
                style={styles.Icon} 
-               onPress={() => setVerConfirmarSenha(!VerConfirmarSenha)}
+               onPress={() => setVerSenha([VerSenha[0],!VerSenha[1]])}
               >
-               <Ionicons name={VerConfirmarSenha === true? 'eye': 'eye-off'} color='#344f7c' size={35}/>
+               <Ionicons name={VerSenha[1] === true? 'eye': 'eye-off'} color='#344f7c' size={35}/>
               </TouchableOpacity>
               
             </View>

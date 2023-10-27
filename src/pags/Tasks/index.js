@@ -8,7 +8,7 @@ export default function Tasks() {
     const index = User.indexOf('@');
     const nome = User.slice(0,index)
     const [opcao, setOpcao] = useState(false);
-    const [Task, setTask] = useState([])
+    const [Task, setTask] = useState()
     const navigation = useNavigation();
     
     if(opcao === true){
@@ -36,8 +36,11 @@ export default function Tasks() {
     }
 
     useEffect(() => {
-        firebase.database().ref(`User/${nome}/tasks`).on( 'value', (snapshot) => {
-            alert(snapshot.val())
+        const tasks = firebase.database().ref(`User/${nome}`).on('value', (snapshot) => {
+            setTask(tasks)
+            alert(Task)
+        })((error) => {
+            console.log(error)
         })
     },[])
     return (
