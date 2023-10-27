@@ -5,8 +5,6 @@ import { Feather, Ionicons } from 'react-native-vector-icons';
 import { User } from '../Login/index';
 import firebase from '../firebase';
 export default function Tasks() {
-    const index = User.indexOf('@');
-    const nome = User.slice(0,index)
     const [opcao, setOpcao] = useState(false);
     const [Task, setTask] = useState()
     const navigation = useNavigation();

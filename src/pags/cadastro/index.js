@@ -16,8 +16,6 @@ export default function Cadastro() {
     const navigation = useNavigation();
 
     async function CriarBanco(){
-      const index = email.indexOf('@')
-      const nome = email.slice(0, index)
       await firebase.database().ref(`User`).set(`${nome}`)
     } 
      async function fazerCadastro(){
