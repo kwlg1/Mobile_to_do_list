@@ -1,14 +1,13 @@
 import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
 import Routes from './src/pags/routes/index';
 
 export default function App() {
 
-  const Stack = createStackNavigator();
-
   return (
-    <View style={styles.container}>
-      <Routes></Routes>
-    </View>
+    <NavigationContainer>
+      <Routes/>
+    </NavigationContainer>
   );
 }
 

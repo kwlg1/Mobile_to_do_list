@@ -1,5 +1,4 @@
 import { StyleSheet, View } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from '../Login/index';
@@ -11,7 +10,6 @@ export default function Routes() {
     const Stack = createStackNavigator();
   
     return (
-      <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name="Login"
@@ -35,7 +33,6 @@ export default function Routes() {
             }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
     );
   }
   
