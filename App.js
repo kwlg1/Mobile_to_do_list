@@ -1,42 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import Login from './src/pags/Login';
-import Tasks from './src/pags/Tasks';
-import Cadastro from './src/pags/cadastro';
+import Routes from './src/pags/routes/index';
 
 export default function App() {
 
   const Stack = createStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen 
-          name="Tasks" 
-          component={Tasks}
-          options={{
-            headerShown: false,
-          }}
-         />
-        <Stack.Screen
-          name='Cadastro'
-          component={Cadastro}
-          options={{
-            headerShown: false
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Routes></Routes>
+    </View>
   );
 }
 
