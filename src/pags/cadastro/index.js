@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Feather, Ionicons } from 'react-native-vector-icons';
-import { User } from '../Login/index';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,15 +14,16 @@ export default function Cadastro() {
     const [ConfirmarSenha, setConfirmarSenha] = useState('');
     const navigation = useNavigation();
 
-    async function CriarBanco(){
-      await firebase.database().ref(`User`).set(`${nome}`)
-    } 
+    function CriarBanco(){
+      const uid = firebase.auth().currentUser.uid
+      firebase.database().ref('User').set(uid)
+    }
      async function fazerCadastro(){
       if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){
         await firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then((value) => {
-          setColorBtn('#334f7c')
-          Alert.alert("Conta criada", `Bem vindo: ${value.user.email}`)
+          setColorBtn('#2b872d7c')
+          CriarBanco()
           setEmail('')
           setSenha('')
           setConfirmarSenha('') 
