@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from '../Login/index';
-import Tasks from '../Tasks/index';
+import Tela from '../Tasks/tela';
 import Cadastro from '../cadastro/index';
 
 export default function Routes() {
@@ -19,8 +19,8 @@ export default function Routes() {
             }}
           />
           <Stack.Screen 
-            name="Tasks" 
-            component={Tasks}
+            name="Tela" 
+            component={Tela}
             options={{
               headerShown: false,
             }}

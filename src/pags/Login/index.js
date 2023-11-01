@@ -19,7 +19,7 @@ export default function Login() {
     .then((value) => {
       User = value.user.email;
       setColorBtn('#334f7c')
-      navigation.navigate("Tasks")
+      navigation.navigate("Tela")
       setEmail('')
       setSenha('')
     })
@@ -51,7 +51,7 @@ export default function Login() {
            secureTextEntry={VerSenha}
            placeholderTextColor={ColorBtn}
            style={styles.Input}
-           placeholder="********"
+           placeholder="******"
            value={Senha}
            onChangeText={(text) => setSenha(text)}
          />

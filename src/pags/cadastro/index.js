@@ -16,7 +16,10 @@ export default function Cadastro() {
 
     function CriarBanco(){
       const uid = firebase.auth().currentUser.uid
-      firebase.database().ref('User').set(uid)
+      firebase.database().ref('User').child(uid)
+      firebase.database().ref(`User/${uid}`).set({
+        task: ''
+      })
     }
      async function fazerCadastro(){
       if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){
@@ -61,6 +64,7 @@ export default function Cadastro() {
               placeholderTextColor={ColorBtn}
               style={styles.Input}
               placeholder="Email"
+              value={email}
               onChangeText={(text) => setEmail(text)}
             />
      
@@ -71,6 +75,7 @@ export default function Cadastro() {
                 placeholderTextColor={ColorBtn}
                 style={styles.Input}
                 placeholder="Senha"
+                value={senha}
                 onChangeText={(text) => setSenha(text)}
               />
               <TouchableOpacity
@@ -89,6 +94,7 @@ export default function Cadastro() {
                 placeholderTextColor={ColorBtn}
                 style={styles.Input}
                 placeholder="Senha"
+                value={ConfirmarSenha}
                 onChangeText={(text) => setConfirmarSenha(text)}
               />
               <TouchableOpacity
