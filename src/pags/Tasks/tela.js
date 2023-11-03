@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList} from 'react-native';
+import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather, Ionicons, MaterialIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
@@ -12,11 +12,12 @@ export default function Tela() {
     const [input, setInput] = useState('')
     const navigation = useNavigation();
     const user = firebase.auth().currentUser.email
-    const teste = [
-        { id: 1, nome: 'Alysson fksgbjkdbgskdbfskfbskjsbdkvsbkskgbskbgkbsgkskgbksgbkbgksbgksgkbskgbksgbskbgksbgkbskb'},
-        { id: 2, nome: 'DoRegoAraujo'},
-        { id: 3, nome: 'Klêvson'}
-    ]
+    const uid = firebase.auth().currentUser.uid
+    const tarefas = []
+    useEffect(() => {
+      const dados = firebase.database().ref('USer'+uid).on('value', (snapshot) => {
+      })
+    },[])
 
     if(opcao === true){
         firebase.auth().signOut(user)
@@ -42,9 +43,6 @@ export default function Tela() {
 
     }
 
-    useEffect(() => {
-    },[])
-
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#344f7c" />
@@ -55,7 +53,7 @@ export default function Tela() {
             <Ionicons name="log-out-outline" color="#fff" size={40} />
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row '}}>
+        <View style={styles.AdcionarTask}>
           <TextInput
             style={styles.input}
             placeholder="Ex. Caminhar"
@@ -64,15 +62,17 @@ export default function Tela() {
             onChangeText={(text) => setInput(text)}
           />
           <TouchableOpacity>
-            <MaterialIcons name="add-box" color="#1d44b8" size={50} />
+            <MaterialIcons name="add-box" color="#1d44b8" size={70} />
           </TouchableOpacity>
         </View>
-        <FlatList
-            style={{ marginTop: 200 }}
-            data={teste}
+        <View style={styles.tarefas}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={tarefas}
             keyExtractor={(item) => item}
             renderItem={({ item }) => <Tasks data={item} />}
-        />
+          />
+        </View>
       </View>
     );
 }
@@ -107,14 +107,24 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        top: 200,
-        height: 50,
+        height: 53,
         width: 260,
-        borderWidth: 1,
+        borderWidth: 2,
         backgroundColor: '#696969',
-        borderColor: '#1d44b8',
+        borderColor: '#080740',
         borderRadius: 8,
-        marginBottom: 50,
+        padding: 15
+    },
+    AdcionarTask: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      top: 200
+    },
+    tarefas: {
+      height: 400,
+      marginTop: 220,
+      padding: 10,
+      marginBottom: 100
     }
 
 });
