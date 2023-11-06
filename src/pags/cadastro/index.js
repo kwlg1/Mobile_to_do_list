@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, 
 import { Feather, Ionicons } from 'react-native-vector-icons';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Cadastro() {
     
@@ -14,12 +15,13 @@ export default function Cadastro() {
     const [ConfirmarSenha, setConfirmarSenha] = useState('');
     const navigation = useNavigation();
 
-    function CriarBanco(){
-      const uid = firebase.auth().currentUser.uid
-      firebase.database().ref('User').child(uid)
-      firebase.database().ref(`User/${uid}`).set({
-        task: ''
+    async function CriarBanco(){
+      const tarefas = JSON.stringify({
+        nome: 'Sem tarefas',
+        desc: 'Ainda não existe tarefas, adcione tarefas!',
+        concluido: false
       })
+      await AsyncStorage.setItem('@tarefas', tarefas)
     }
      async function fazerCadastro(){
       if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){

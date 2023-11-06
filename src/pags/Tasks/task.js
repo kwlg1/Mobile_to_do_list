@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
-import { Entypo } from 'react-native-vector-icons'
 import firebase from '../firebase';
 import DescTask from './DesTask';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Tasks( {data} ) {
     const user = firebase.auth().currentUser.email
     const uid =firebase.auth().currentUser.uid
     const [color, setColor] = useState('#080740')
     const [concluido, setConcluido] = useState(false)
     const [vizualizar, setVizualizar] = useState(false)
-
+    const tarefas = []
     function mudarCor(){
         setColor('#1aba2f')
         setConcluido(true)
     }
+    useEffect(() => {
+        async function pegarDados(){
+            await AsyncStorage.getItem("@tarefas").then((value) => {
+              tarefas.push(JSON.parse(value))
+            })
+    }
+    pegarDados();
+    },[])
 
     return (
         <View style={[styles.container, {opacity: vizualizar===true? 0.5: 20}]}>
             <TouchableOpacity
                 onPress={() => setVizualizar(true)}
             >
-                <View style={[styles.tarefas, { backgroundColor: concluido === true ? '#1aba2f' : '#080740' }]}>
+                <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1aba2f' : '#080740' }]}>
                         <Text style={styles.textTask}>{data.nome}</Text>
                 </View>
                 <Modal
@@ -28,7 +36,7 @@ export default function Tasks( {data} ) {
                     transparent={true}
                     visible={vizualizar}
                 >
-                    <DescTask data={data} fechar={() => setVizualizar(false)}/>
+                    <DescTask  tarefas={tarefas} data={data} fechar={() => setVizualizar(false)}/>
                 </Modal>
             </TouchableOpacity>
   

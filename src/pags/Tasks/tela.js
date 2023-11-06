@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList, ScrollView} from 'react-native';
+import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather, Ionicons, MaterialIcons } from 'react-native-vector-icons';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import firebase from '../firebase';
 import Tasks from './task';
-import { TextInput } from 'react-native-gesture-handler';
+import AdcionarTask from './adcionarTask'
 
 export default function Tela() {
     const [opcao, setOpcao] = useState(false);
     const [Task, setTask] = useState([])
     const [input, setInput] = useState('')
     const navigation = useNavigation();
+    const [viewModal, setViewModal] =  useState(false)
+
     const user = firebase.auth().currentUser.email
-    const uid = firebase.auth().currentUser.uid
     const tarefas = []
     useEffect(() => {
-      const dados = firebase.database().ref('USer'+uid).on('value', (snapshot) => {
-      })
+      async function pegarDados(){
+        await AsyncStorage.getItem("@tarefas").then((value) => {
+          tarefas.push(JSON.parse(value))
+        })
+      }
+      pegarDados();
     },[])
 
     if(opcao === true){
@@ -53,25 +61,26 @@ export default function Tela() {
             <Ionicons name="log-out-outline" color="#fff" size={40} />
           </TouchableOpacity>
         </View>
-        <View style={styles.AdcionarTask}>
-          <TextInput
-            style={styles.input}
-            placeholder="Ex. Caminhar"
-            placeholderTextColor="#afafc4"
-            value={input}
-            onChangeText={(text) => setInput(text)}
-          />
-          <TouchableOpacity>
-            <MaterialIcons name="add-box" color="#1d44b8" size={70} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => setViewModal(true)}
+        >
+          <MaterialIcons name="add-box" color="#1d44b8" size={70} />
+        </TouchableOpacity>
+
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={viewModal}
+        >
+          <AdcionarTask fechar={() => setViewModal(false)} />
+        </Modal>
         <View style={styles.tarefas}>
-          <FlatList
+        <FlatList
             showsVerticalScrollIndicator={false}
             data={tarefas}
             keyExtractor={(item) => item}
             renderItem={({ item }) => <Tasks data={item} />}
-          />
+        />
         </View>
       </View>
     );
@@ -105,15 +114,6 @@ const styles = StyleSheet.create({
         top: 8,
         right: 25,
 
-    },
-    input: {
-        height: 53,
-        width: 260,
-        borderWidth: 2,
-        backgroundColor: '#696969',
-        borderColor: '#080740',
-        borderRadius: 8,
-        padding: 15
     },
     AdcionarTask: {
       alignItems: 'center',

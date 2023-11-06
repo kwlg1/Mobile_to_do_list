@@ -1,14 +1,20 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView} from 'react-native';
 import { Entypo, MaterialIcons} from 'react-native-vector-icons'
 
-export default function DescTask({data, fechar}){
+export default function DescTask({tarefas, data, fechar, }){
     const [color, setColor] = useState('#080740')
-    const [concluido, setConcluido] = useState(false)
+
+    async function mudarCor(){
+        const task = tarefas
+        const index = tarefas.indexOf(data.nome)
+        alert(task[index].nome)
+    }
     return(
         <View style={styles.container}>
 
-            <View style={[styles.tarefas, { backgroundColor: concluido === true ? '#1aba2f' : '#080740' }]}>
+            <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1aba2f' : '#080740' }]}>
                 <TouchableOpacity
 
                 >
@@ -49,13 +55,11 @@ const styles = StyleSheet.create({
     tarefas: {
         width: "100%",
         height: 400,
-        alignItems: '',
         flexDirection: 'row',
         paddingTop: 30,
         padding: 10,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-
 
     },
     textTask : {
