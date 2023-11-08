@@ -1,15 +1,47 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text, TextInput, Alert } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useNavigation } from '@react-navigation/native';
+import firebase from '../firebase';
 export default function AdcionarTask( {fechar} ) {
+    
+    const [opcao, setOpcao] = useState(false);
+    const [nome, setNome] = useState('');
+    const [desc,setDesc] = useState('');
+    const [tarefas, setTarefas] = useState()
+    const user = firebase.auth().currentUser
+    const navigation = useNavigation();
 
+    useEffect(() => {
+        async function Pegardados(){
+          await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {
+            const dados = JSON.parse(snapshot.val())
+            setTarefas(dados)
+          })
+        }
+        Pegardados()
+    }, [])
 
-    async function adcionarTarefa(){
-        
-        await AsyncStorage.setItem("@tarefas", )
+    async function salvarTarefas(){
+        await firebase.database().ref("User/"+user.uid).set(JSON.stringify(tarefas))
     }
+    async function adcionarTarefa(){
+        const dados = {
+            nome: nome,
+            desc: desc,
+            concluido: false
+        }
+        if(tarefas.length === 1 && tarefas[0].nome === 'Sem tarefas'){
+            tarefas.pop()
+            tarefas.push(dados)
+            salvarTarefas()
+        } else {
+            tarefas.push(dados)
+            salvarTarefas()
+        }
+
+    }
+
  return (
      <View style={styles.container}>
          <View style={styles.Form}>
@@ -25,12 +57,16 @@ export default function AdcionarTask( {fechar} ) {
                  style={styles.input}
                  placeholder="Ex. Caminhar"
                  placeholderTextColor="#afafc4"
+                 value={nome}
+                 onChangeText={(text) => setNome(text)}
              />
             <Text style={styles.text}>Descrição</Text>
              <TextInput
                  style={styles.input}
                  placeholder="Ex. fui caminhar as 5h da manhã"
                  placeholderTextColor="#afafc4"
+                 value={desc}
+                 onChangeText={(text) => setDesc(text)}
              />
             <TouchableOpacity
                 style={styles.Add}

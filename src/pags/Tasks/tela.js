@@ -3,37 +3,34 @@ import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList, M
 import { useNavigation } from '@react-navigation/native';
 import { Feather, Ionicons, MaterialIcons } from 'react-native-vector-icons';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import firebase from '../firebase';
-import Tasks from './task';
+import firebase from '../firebase'
+import Tasks from './task'
 import AdcionarTask from './adcionarTask'
 
 export default function Tela() {
-    const [opcao, setOpcao] = useState(false);
-    const [Task, setTask] = useState([])
-    const [input, setInput] = useState('')
-    const navigation = useNavigation();
+    const [opcao, setOpcao] = useState(false)
+    const navigation = useNavigation()
     const [viewModal, setViewModal] =  useState(false)
+    const [tarefas, setTarefas] = useState()
+    const user = firebase.auth().currentUser
 
-    const user = firebase.auth().currentUser.email
-    const tarefas = []
     useEffect(() => {
-      async function pegarDados(){
-        await AsyncStorage.getItem("@tarefas").then((value) => {
-          tarefas.push(JSON.parse(value))
+      async function Pegardados(){
+        await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {
+          const dados = JSON.parse(snapshot.val())
+          setTarefas(dados)
         })
       }
-      pegarDados();
-    },[])
+      Pegardados()
+    }, [])
 
     if(opcao === true){
-        firebase.auth().signOut(user)
-        .then(() => {
+        firebase.auth().signOut(user.email)
+        .then((value) => {
             navigation.navigate('Login')
         })
         .catch((error) => {
-            console.log("Error signing out", error);
+            console.error('Deu erro')
         })
     }
 
@@ -56,15 +53,16 @@ export default function Tela() {
         <StatusBar backgroundColor="#344f7c" />
         <View style={styles.User}>
           <Feather name="user" color="#fff" size={60} />
-          <Text style={styles.TextUser}>{user}</Text>
+          <Text style={styles.TextUser}>{user.email}</Text>
           <TouchableOpacity style={styles.logOut} onPress={() => LogOut()}>
             <Ionicons name="log-out-outline" color="#fff" size={40} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity
+          style={styles.AdcionarTask}
           onPress={() => setViewModal(true)}
         >
-          <MaterialIcons name="add-box" color="#1d44b8" size={70} />
+          <MaterialIcons name="add-box" color="#080740" size={100} />
         </TouchableOpacity>
 
         <Modal
@@ -75,6 +73,7 @@ export default function Tela() {
           <AdcionarTask fechar={() => setViewModal(false)} />
         </Modal>
         <View style={styles.tarefas}>
+
         <FlatList
             showsVerticalScrollIndicator={false}
             data={tarefas}
@@ -116,13 +115,14 @@ const styles = StyleSheet.create({
 
     },
     AdcionarTask: {
+      position: 'absolute',
       alignItems: 'center',
       flexDirection: 'row',
       top: 200
     },
     tarefas: {
       height: 400,
-      marginTop: 220,
+      marginTop: 360,
       padding: 10,
       marginBottom: 100
     }

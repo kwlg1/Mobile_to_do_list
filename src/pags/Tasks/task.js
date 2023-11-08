@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Modal} from 'react-native';
 import firebase from '../firebase';
 import DescTask from './DesTask';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Tasks( {data} ) {
     const user = firebase.auth().currentUser.email
     const uid =firebase.auth().currentUser.uid
@@ -10,21 +10,9 @@ export default function Tasks( {data} ) {
     const [concluido, setConcluido] = useState(false)
     const [vizualizar, setVizualizar] = useState(false)
     const tarefas = []
-    function mudarCor(){
-        setColor('#1aba2f')
-        setConcluido(true)
-    }
-    useEffect(() => {
-        async function pegarDados(){
-            await AsyncStorage.getItem("@tarefas").then((value) => {
-              tarefas.push(JSON.parse(value))
-            })
-    }
-    pegarDados();
-    },[])
 
     return (
-        <View style={[styles.container, {opacity: vizualizar===true? 0.5: 20}]}>
+        <View style={styles.container}>
             <TouchableOpacity
                 onPress={() => setVizualizar(true)}
             >

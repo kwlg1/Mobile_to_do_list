@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView} from 'react-native';
 import { Entypo, MaterialIcons} from 'react-native-vector-icons'
 
-export default function DescTask({tarefas, data, fechar, }){
-    const [color, setColor] = useState('#080740')
+export default function DescTask({ data, fechar, }){
+
+    useEffect(() => {
+        
+    })
 
     async function mudarCor(){
-        const task = tarefas
-        const index = tarefas.indexOf(data.nome)
-        alert(task[index].nome)
+
     }
     return(
         <View style={styles.container}>
