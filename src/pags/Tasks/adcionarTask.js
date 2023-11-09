@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Text, TextInput, Alert } from 'reac
 import { MaterialIcons } from 'react-native-vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import firebase from '../firebase';
-export default function AdcionarTask( {fechar} ) {
+export default function AdcionarTask(props) {
     
     const [opcao, setOpcao] = useState(false);
     const [nome, setNome] = useState('');
@@ -25,6 +25,7 @@ export default function AdcionarTask( {fechar} ) {
     async function salvarTarefas(){
         await firebase.database().ref("User/"+user.uid).set(JSON.stringify(tarefas))
     }
+
     async function adcionarTarefa(){
         const dados = {
             nome: nome,
@@ -35,11 +36,25 @@ export default function AdcionarTask( {fechar} ) {
             tarefas.pop()
             tarefas.push(dados)
             salvarTarefas()
+            fechar()
         } else {
             tarefas.push(dados)
             salvarTarefas()
+            fechar()
         }
 
+    }
+    function fechar(){
+        Alert.alert("Tarefa cadastrada", `Sua tarefa "${nome}" foi cadastrada\n\nDeseja adicionar outra tarefa`, [
+            {
+                text: 'não',
+                onPress: props.fechar
+            },
+            {
+                text: 'sim',
+                
+            }
+        ])
     }
 
  return (
@@ -47,7 +62,7 @@ export default function AdcionarTask( {fechar} ) {
          <View style={styles.Form}>
             <TouchableOpacity
                 style={styles.sair}
-                onPress={fechar}
+                onPress={props.fechar}
             >
                 <MaterialIcons name="fullscreen-exit" size={25} color="#afafc4" />
             </TouchableOpacity>

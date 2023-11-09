@@ -1,23 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import { Entypo, MaterialIcons} from 'react-native-vector-icons'
 
-export default function DescTask({ data, fechar, }){
+import firebase from '../firebase'
+
+export default function DescTask({ data, fechar }){
+    const [tarefas, setTarefas] = useState()
+    const user = firebase.auth().currentUser
 
     useEffect(() => {
-        
-    })
+        async function Pegardados(){
+          await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {
+            const dados = JSON.parse(snapshot.val())
+            setTarefas(dados)
+          })
+        }
+        Pegardados()
+      }, [])
 
-    async function mudarCor(){
+    function apagarDados(){
+        const index = tarefas.indexOf(data.nome)
+        alert(index)
+    }
+
+    function mudarCor(){
 
     }
+
     return(
         <View style={styles.container}>
 
             <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1aba2f' : '#080740' }]}>
                 <TouchableOpacity
-
+                    onPress={() => apagarDados()}
                 >
                     <Entypo name='trash' size={25} color='#afafc4' />
                 </TouchableOpacity>

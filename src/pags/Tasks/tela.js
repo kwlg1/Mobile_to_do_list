@@ -14,6 +14,10 @@ export default function Tela() {
     const [tarefas, setTarefas] = useState()
     const user = firebase.auth().currentUser
 
+    function fechar(){
+      setViewModal(false)
+    }
+
     useEffect(() => {
       async function Pegardados(){
         await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {
@@ -70,7 +74,7 @@ export default function Tela() {
           transparent={true}
           visible={viewModal}
         >
-          <AdcionarTask fechar={() => setViewModal(false)} />
+          <AdcionarTask fechar={fechar} />
         </Modal>
         <View style={styles.tarefas}>
 
