@@ -33,7 +33,7 @@ export default function Cadastro() {
           setEmail('')
           setSenha('')
           setConfirmarSenha('') 
-          navigation.navigate('Login');
+          navigation.navigate('Tela')
         })
         .catch((error) => {
           setColorBtn('#a72836')
@@ -76,6 +76,7 @@ export default function Cadastro() {
               <TextInput
                 secureTextEntry={VerSenha[0]}
                 placeholderTextColor={ColorBtn}
+                color='#fff'
                 style={styles.Input}
                 placeholder="Senha"
                 value={senha}
@@ -95,6 +96,7 @@ export default function Cadastro() {
               <TextInput
                 secureTextEntry={VerSenha[1]}
                 placeholderTextColor={ColorBtn}
+                color='#fff'
                 style={styles.Input}
                 placeholder="Senha"
                 value={ConfirmarSenha}

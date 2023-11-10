@@ -5,9 +5,11 @@ import { Entypo, MaterialIcons} from 'react-native-vector-icons'
 
 import firebase from '../firebase'
 
-export default function DescTask({ data, fechar }){
+export default function DescTask(props){
+    const [opcao, setOpcao] = useState(false)
     const [tarefas, setTarefas] = useState()
     const user = firebase.auth().currentUser
+    const index = ''
 
     useEffect(() => {
         async function Pegardados(){
@@ -17,30 +19,57 @@ export default function DescTask({ data, fechar }){
           })
         }
         Pegardados()
+
       }, [])
+ 
+
+    async function salvarTarefas() {
+        await firebase.database().ref("User/" + user.uid).set(JSON.stringify(tarefas))
+    }
 
     function apagarDados(){
-        const index = tarefas.indexOf(data.nome)
-        alert(index)
+        const verificaIndex = tarefas.map((todo) => {
+            const verifica = todo.nome === props.data.nome? tarefas.indexOf(todo): ''
+
+            if(verifica !== ''){
+                tarefas.splice(verifica, 1)
+                salvarTarefas()
+            }
+        })
     }
 
     function mudarCor(){
+        const dados = {
+            nome: props.data.nome,
+            desc: props.data.desc,
+            concluido: true
+        }
 
+        const verificaIndex = tarefas.map((todo) => {
+            const verifica = todo.nome === props.data.nome? tarefas.indexOf(todo): ''
+
+            if(verifica !== ''){
+                tarefas.splice(verifica, 1)
+                tarefas.splice(verifica, 0, dados)
+                salvarTarefas()
+            }
+        })
     }
 
     return(
         <View style={styles.container}>
 
-            <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1aba2f' : '#080740' }]}>
+            <View style={styles.tarefas}>
                 <TouchableOpacity
-                    onPress={() => apagarDados()}
+                    onPress={() => apagarDados( )}
+                    onPressOut={props.fechar}
                 >
                     <Entypo name='trash' size={25} color='#afafc4' />
                 </TouchableOpacity>
 
                 <View style={styles.ViewFechar}>
                 <TouchableOpacity
-                    onPress={fechar}
+                    onPress={props.fechar}
                 >
                     <MaterialIcons name='fullscreen-exit' size={20} color='#afafc4'/>
                 </TouchableOpacity>
@@ -48,14 +77,14 @@ export default function DescTask({ data, fechar }){
                     style={styles.TextDesc}
                     showsVerticalScrollIndicator={false}
                     >
-                    <Text style={styles.textTask}>{data.desc}</Text>
+                    <Text style={styles.textTask}>{props.data.desc}</Text>
                 </ScrollView>
                 </View>
 
                 <TouchableOpacity
                     onPress={() => mudarCor()}
                 >
-                    <Entypo name='check' size={25} color='#afafc4' />
+                    <Entypo name='check' size={25} color={props.data.concluido === true? '#1e6322':'#afafc4'} />
                 </TouchableOpacity>
 
             </View>
@@ -73,6 +102,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 400,
         flexDirection: 'row',
+        backgroundColor: '#091529',
         paddingTop: 30,
         padding: 10,
         borderTopLeftRadius: 25,

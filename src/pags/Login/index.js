@@ -38,6 +38,7 @@ export default function Login() {
        <Text style={styles.Text}>Email</Text>
        <TextInput
          placeholderTextColor={ColorBtn}
+         color='#fff'
          style={styles.Input}
          placeholder="Ex. example@gmail.com"
          value={Email}
@@ -50,6 +51,7 @@ export default function Login() {
          <TextInput
            secureTextEntry={VerSenha}
            placeholderTextColor={ColorBtn}
+           color='#fff'
            style={styles.Input}
            placeholder="******"
            value={Senha}

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Modal} from 'reac
 import firebase from '../firebase';
 import DescTask from './DesTask';
 
-export default function Tasks( {data} ) {
+export default function Tasks( {data, opcao} ) {
     const user = firebase.auth().currentUser.email
     const uid =firebase.auth().currentUser.uid
     const [color, setColor] = useState('#080740')
@@ -16,8 +16,8 @@ export default function Tasks( {data} ) {
             <TouchableOpacity
                 onPress={() => setVizualizar(true)}
             >
-                <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1aba2f' : '#080740' }]}>
-                        <Text style={styles.textTask}>{data.nome}</Text>
+                <View style={[styles.tarefas, { backgroundColor: data.concluido === true ? '#1e6322' : '#080740'}]}>
+                    <Text style={styles.textTask}>{data.nome}</Text>
                 </View>
                 <Modal
                     animationType='slide'

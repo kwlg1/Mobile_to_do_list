@@ -74,7 +74,7 @@ export default function Tela() {
           transparent={true}
           visible={viewModal}
         >
-          <AdcionarTask fechar={fechar} />
+          <AdcionarTask fechar={() => fechar()} />
         </Modal>
         <View style={styles.tarefas}>
 

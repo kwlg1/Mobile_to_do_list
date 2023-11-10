@@ -72,14 +72,16 @@ export default function AdcionarTask(props) {
                  style={styles.input}
                  placeholder="Ex. Caminhar"
                  placeholderTextColor="#afafc4"
+                 color='#fff'
                  value={nome}
                  onChangeText={(text) => setNome(text)}
              />
             <Text style={styles.text}>Descrição</Text>
              <TextInput
                  style={styles.input}
-                 placeholder="Ex. fui caminhar as 5h da manhã"
+                 placeholder="Ex. Vou caminhar as 5h da manhã"
                  placeholderTextColor="#afafc4"
+                 color='#fff'
                  value={desc}
                  onChangeText={(text) => setDesc(text)}
              />
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     Form: {
         width: "100%",
         height: 400,
-        backgroundColor: '#080740',
+        backgroundColor: '#091529',
         paddingTop: 30,
         padding: 30,
         borderTopLeftRadius: 25,
