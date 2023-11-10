@@ -45,7 +45,7 @@ export default function AdcionarTask(props) {
 
     }
     function fechar(){
-        Alert.alert("Tarefa cadastrada", `Sua tarefa "${nome}" foi cadastrada\n\nDeseja adicionar outra tarefa`, [
+        Alert.alert("Tarefa cadastrada", `Sua tarefa "${nome}" foi cadastrada\n\nDeseja adicionar outra tarefa?`, [
             {
                 text: 'não',
                 onPress: props.fechar
