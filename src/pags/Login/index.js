@@ -31,7 +31,7 @@ export default function Login() {
 
  return (
    <View style={styles.container}>
-     <StatusBar backgroundColor="#839deb" />
+     <StatusBar backgroundColor="#839deb" /> 
      <View>
        <Image style={styles.logo} source={logo}></Image>
 
@@ -70,7 +70,15 @@ export default function Login() {
        >
          <Text style={{color: '#fff'}}>Login</Text>
        </TouchableOpacity>
+
+       <View style={styles.Viewline}>
+        <View style={styles.Line}></View>
+        <Text style={[styles.Text, {marginLeft: 0, marginBottom: 0}]}>Ou</Text>
+        <View style={styles.Line}></View>
      </View>
+
+     </View>
+
      <TouchableOpacity
      onPress={() => navigation.navigate('Cadastro')}
      >
@@ -90,9 +98,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: -150,
     width: 300,
     height: 300,
+    top: -30,
+    marginBottom: -40
   },
   Text: {
     fontSize: 14,
@@ -114,11 +123,14 @@ const styles = StyleSheet.create({
   btn: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 120,
+    width: 280,
     height: 45,
-    marginLeft: 80,
-    borderRadius: 18,
-    marginTop: 20,
+    marginTop: 4,
+    marginBottom: 20,
+    borderWidth: 0.9,
+    borderColor: '#b6b9b4',
+    borderRadius: 10,
+
   },
   Icon: {
     marginTop: 6,
@@ -127,5 +139,19 @@ const styles = StyleSheet.create({
   TextCadastro: {
     color: '#1d44b8',
     marginTop: 20,
+  },
+  Viewline: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    left: -10,
+    width: 300,
+  },
+  Line: {
+    width: 130,
+    height: 1,
+    backgroundColor: '#fff',
+
   }
+
 });

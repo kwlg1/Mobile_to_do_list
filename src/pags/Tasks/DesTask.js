@@ -38,7 +38,7 @@ export default function DescTask(props){
         })
     }
 
-    function mudarCor(){
+    function concluido(){
         const dados = {
             nome: props.data.nome,
             desc: props.data.desc,
@@ -82,7 +82,7 @@ export default function DescTask(props){
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => mudarCor()}
+                    onPress={() => concluido()}
                 >
                     <Entypo name='check' size={25} color={props.data.concluido === true? '#1e6322':'#afafc4'} />
                 </TouchableOpacity>
