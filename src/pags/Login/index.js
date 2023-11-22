@@ -18,10 +18,11 @@ export default function Login() {
     await firebase.auth().signInWithEmailAndPassword(Email, Senha)
     .then((value) => {
       User = value.user.email;
-      setColorBtn('#334f7c')
-      navigation.navigate("Tela")
+      setColorBtn('#2b872d7c')
       setEmail('')
       setSenha('')
+      navigation.navigate("Tela")
+      setColorBtn('#334f7c')
     })
     .catch((error) => {
       setColorBtn("#A72836")

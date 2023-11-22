@@ -39,7 +39,7 @@ export default function Tela() {
     }
 
     function LogOut(){    
-        Alert.alert('Sign Out', 'Você deseja mesmo fazer sign Out', [
+        Alert.alert('Sign Out', 'Você deseja mesmo fazer sign Out?', [
             {
                 text: 'Cancelar',
                 onPress: () => setOpcao(false)
