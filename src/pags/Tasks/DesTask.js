@@ -42,7 +42,8 @@ export default function DescTask(props){
         const dados = {
             nome: props.data.nome,
             desc: props.data.desc,
-            concluido: true
+            data: props.data.data,
+            concluido: !props.data.concluido
         }
 
         const verificaIndex = tarefas.map((todo) => {
@@ -73,6 +74,7 @@ export default function DescTask(props){
                 >
                     <MaterialIcons name='fullscreen-exit' size={20} color='#afafc4'/>
                 </TouchableOpacity>
+                <Text style={styles.data}>{`Data de Realizção\n${props.data.data}`}</Text>
                 <ScrollView 
                     style={styles.TextDesc}
                     showsVerticalScrollIndicator={false}
@@ -116,13 +118,28 @@ const styles = StyleSheet.create({
         
     },
     TextDesc: {
+        width: 300,
+        textAlign: 'justify',
         marginTop: 20,
         marginBottom: 20,
-        margin: 10,
+        borderWidth: 2,
+        borderColor: '#afafc4',
+        borderRadius: 10,
+        padding: 10,
 
     },
     ViewFechar: {
         alignItems: 'center',
         width: 300,
+    },
+    data: {
+        fontSize: 16, 
+        textAlign: 'center',
+        color: '#afafc4', 
+        marginTop: 20,
+        borderWidth: 2,
+        borderColor: '#afafc4',
+        borderRadius: 10,
+        padding: 10,
     }
 })

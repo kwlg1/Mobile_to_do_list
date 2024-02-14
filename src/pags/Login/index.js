@@ -1,129 +1,151 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Ionicons} from 'react-native-vector-icons'
+import { Ionicons, Feather, EvilIcons } from 'react-native-vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import firebase from '../firebase'
 
 export default function Login() {
 
 
- const [Email, setEmail] = useState('');
- const [Senha, setSenha] = useState('');
- const [VerSenha, setVerSenha] = useState(true);
- const [ColorBtn, setColorBtn] = useState('#334f7c');
- const logo = require('../../../assets/logo.png');
- const navigation = useNavigation();
+  const [Email, setEmail] = useState('');
+  const [Senha, setSenha] = useState('');
+  const [VerSenha, setVerSenha] = useState(true);
+  const [ColorBtn, setColorBtn] = useState('#334f7c');
+  const navigation = useNavigation();
+  const logo = require('../../../assets/logo.png');
 
-  async function fazerLogin(){
+  async function fazerLogin() {
     await firebase.auth().signInWithEmailAndPassword(Email, Senha)
-    .then((value) => {
-      User = value.user.email;
-      setColorBtn('#2b872d7c')
-      setEmail('')
-      setSenha('')
-      navigation.navigate("Tela")
-      setColorBtn('#334f7c')
-    })
-    .catch((error) => {
-      setColorBtn("#A72836")
-      Alert.alert("Erro", `Email ou senha incorreto!`)
-    })  
- }
+      .then(() => {
+          setColorBtn("#334f7c")
+      })
+      .catch((error) => {
+        setColorBtn("#A72836")
+        Alert.alert("Erro", `Email ou senha incorreto!`)
+      })
+  }
 
- return (
-   <View style={styles.container}>
-     <StatusBar backgroundColor="#839deb" /> 
-     <View>
-       <Image style={styles.logo} source={logo}></Image>
+  async function resetPassword(){
+    if(Email === ''){
+      Alert.alert("Email não digitado", "Insira um endereço de email")
+    }else {
+      firebase.auth().sendPasswordResetEmail(Email)
+      .then(() => {
+        Alert.alert("Email enviado", "Verifique sua caixa de entrada")
+      })
+      .catch((error) => {
+        if(error.code === 'auth/invalid-email'){
+          Alert.alert("Erro", `Email não cadastrado, Cadastre-se!`)
+        }
+      })
+    }
+  }
 
-       <Text style={styles.Text}>Email</Text>
-       <TextInput
-         placeholderTextColor={ColorBtn}
-         color='#fff'
-         style={styles.Input}
-         placeholder="Ex. example@gmail.com"
-         value={Email}
-         onChangeText={(text) => setEmail(text)}
 
-       />
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#11114e"/>
+      <Image style={styles.logo} source={logo}></Image>
 
-       <Text style={styles.Text}>Senha</Text>
-       <View style={{ flexDirection: "row" }}>
-         <TextInput
-           secureTextEntry={VerSenha}
-           placeholderTextColor={ColorBtn}
-           color='#fff'
-           style={styles.Input}
-           placeholder="******"
-           value={Senha}
-           onChangeText={(text) => setSenha(text)}
-         />
-         <TouchableOpacity
-          style={styles.Icon} 
-          onPress={() => setVerSenha(!VerSenha)}
-         >
-          <Ionicons name={VerSenha === true? 'eye': 'eye-off'} color='#334f7c' size={35}/>
-         </TouchableOpacity>
-       </View>
-       <TouchableOpacity 
-       style={[styles.btn, {backgroundColor: ColorBtn}]}
-       onPress={()=> fazerLogin()}
-       >
-         <Text style={{color: '#fff'}}>Login</Text>
+      <View style={styles.BoxForm}>
+        <Text style={styles.TextAcessar}>Acesse sua conta</Text>
+
+        <View style={styles.User}>
+
+          <Feather style={styles.IconUser} name='user' color='#022b42' size={30} />
+          <Text style={[styles.Text, {top: 30, left: 38}]}>{Email.length === 0? "User or Email": ""}</Text>
+          <TextInput
+            color='#022b42'
+            style={styles.Input}
+            value={Email}
+            onChangeText={(text) => setEmail(text)}
+          />
+
+        </View>
+
+        <View style={styles.Password}>
+          <EvilIcons style={styles.IconPassword} name='lock' color='#022b42' size={50} />
+          <Text style={[styles.Text, {top: 30, left: 38}]}>{Senha.length === 0? " Password": ""}</Text>
+          <TextInput
+            secureTextEntry={VerSenha}
+            placeholderTextColor={ColorBtn}
+            color='#022b42'
+            style={styles.Input}
+            value={Senha}
+            onChangeText={(text) => setSenha(text)}
+          />
+          <TouchableOpacity
+            style={styles.ShowPassword}
+            onPress={() => setVerSenha(!VerSenha)}
+          >
+            <Ionicons name={VerSenha === true ? 'eye' : 'eye-off'} color='#022b42' size={30} />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: ColorBtn }]}
+          onPress={() => fazerLogin()}
+        >
+          <Text style={{ color: '#fff' }}>Login</Text>
+        </TouchableOpacity>
+      
+        <Text style={{marginBottom: 20}}>Ou</Text>
+
+      <TouchableOpacity
+          style={[styles.btn, {marginBottom: 2}]}
+          onPress={() => resetPassword()}
+        >
+          <Text style={{ color: '#fff' }}>Esqueci a senha</Text>
+       </TouchableOpacity>
+       
+       <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate('Cadastro')}
+        >
+          <Text style={{ color: '#fff' }}>Cadastrar uma conta</Text>
        </TouchableOpacity>
 
-       <View style={styles.Viewline}>
-        <View style={styles.Line}></View>
-        <Text style={[styles.Text, {marginLeft: 0, marginBottom: 0}]}>Ou</Text>
-        <View style={styles.Line}></View>
-     </View>
-
-     </View>
-
-     <TouchableOpacity
-     onPress={() => navigation.navigate('Cadastro')}
-     >
-      <Text style={styles.TextCadastro}>Não possui conta? cadastre-se</Text>
-     </TouchableOpacity>
-   </View>
- );
+      </View>
+    </View>
+  );
 }
-
-export var User = '';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: '#11114e',
+  },
+  BoxForm: {
     backgroundColor: '#839deb',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 500,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   logo: {
-    width: 300,
-    height: 300,
-    top: -30,
-    marginBottom: -40
-  },
-  Text: {
-    fontSize: 14,
-    color: '#fff',
-    marginLeft: 10,
-    marginBottom: 2,
+    bottom: 80,
+    width: 280,
+    height: 90,
   },
   Input: {
-    backgroundColor: '#b6b9b4',
     width: 280,
     height: 50,
-    padding: 10,
-    paddingRight: 55,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#1d44b8',
+    paddingTop: 26,
+    paddingLeft: 40,
+    paddingRight: 42,
     marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: '#334f7c',
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+
   },
   btn: {
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#334f7c',
     width: 280,
     height: 45,
     marginTop: 4,
@@ -133,26 +155,59 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
   },
-  Icon: {
-    marginTop: 6,
-    marginLeft: -44,
+  ShowPassword: {
+    top: 18,
+    marginLeft: -34,
+  },
+  TextAcessar: {
+    position: 'absolute',
+    top: 50,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#022b42'
   },
   TextCadastro: {
-    color: '#1d44b8',
-    marginTop: 20,
+    color: '#022b42',
+    marginBottom: 30,
+    marginTop: 40,
+    fontSize: 14,  
+  },
+  TextRedefinir: {
+    color: '#022b42',
+    backgroundColor: '#839deb',
+    marginBottom: 10,
+    marginTop: 40,
+    fontSize: 14,
   },
   Viewline: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    left: -10,
-    width: 300,
+    justifyContent: 'space-around',
+    width: 350,
+    marginTop: 20
   },
-  Line: {
-    width: 130,
-    height: 1,
-    backgroundColor: '#fff',
-
+  Text: {
+    position: 'absolute',
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#022b42',
+  },
+  User: {
+    flexDirection: 'row'
+  },
+  Password: {
+    flexDirection: 'row',
+  },
+  IconUser: {
+    position: 'absolute',
+    top: 16,
+    left: 4,
+  },
+  IconPassword: {
+    position: 'absolute',
+    top: 6,
+    left: -6,
   }
+
 
 });

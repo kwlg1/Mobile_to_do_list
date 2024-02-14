@@ -10,7 +10,6 @@ export default function Cadastro() {
     const logo = require('../../../assets/logo.png');
     const [VerSenha, setVerSenha] = useState([true, true]);
     const [ColorBtn, setColorBtn] = useState("#334f7c");
-    const [date, setDate] = useState(new Date());
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [ConfirmarSenha, setConfirmarSenha] = useState('');
@@ -18,7 +17,7 @@ export default function Cadastro() {
 
     async function CriarBanco(){
       const tarefas = [
-        {nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adicione uma tarefa', data: `${date.getDate() <= 9 ? '0'+date.getDate() : date.getDate()} / ${date.getMonth() <= 9 ? '0'+date.getMonth()+1: date.getMonth()+1} / ${date.getFullYear()}`,concluido: false}
+        {nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adcione uma tarefa', concluido: false}
       ]
       const uid = firebase.auth().currentUser.uid
 
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 45,
     marginTop: 4,
-    marginBottom: 50,
+    marginBottom: 20,
     borderWidth: 0.9,
     borderColor: '#b6b9b4',
     borderRadius: 10,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "App_to_do_list",
-    "slug": "App_to_do_list",
+    "name": "CheckList",
+    "slug": "CheckList",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.klevson123.App_to_do_list"
+      "package": "com.klevson123.CheckList"
     },
     "web": {
       "favicon": "./assets/favicon.png"
