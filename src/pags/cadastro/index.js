@@ -4,7 +4,6 @@ import { Feather, Ionicons, EvilIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 
-
 export default function Cadastro() {
     
     const logo = require('../../../assets/logo.png');
@@ -18,7 +17,7 @@ export default function Cadastro() {
 
     async function CriarBanco(){
       const tarefas = [
-        {nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adicione uma tarefa', data: `${date.getDate() <= 9 ? '0'+date.getDate() : date.getDate()} / ${date.getMonth() <= 9 ? '0'+date.getMonth()+1: date.getMonth()+1} / ${date.getFullYear()}`,concluido: false}
+        {id: Date.now() , nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adicione uma tarefa', data: `${date.getDate() <= 9 ? '0'+date.getDate() : date.getDate()} / ${date.getMonth() <= 9 ? '0'+ Number(date.getMonth()+ 1): Number(date.getMonth()+ 1)} / ${date.getFullYear()}`,concluido: false}
       ]
       const uid = firebase.auth().currentUser.uid
 

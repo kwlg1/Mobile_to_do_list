@@ -63,6 +63,7 @@ export default function AdcionarTask(props) {
 
     async function adcionarTarefa(){
         const dados = {
+            id: Date.now(),
             nome: nome,
             desc: desc,
             data: viewData,

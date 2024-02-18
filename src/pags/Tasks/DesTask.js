@@ -29,7 +29,7 @@ export default function DescTask(props){
 
     function apagarDados(){
         const verificaIndex = tarefas.map((todo) => {
-            const verifica = todo.nome === props.data.nome? tarefas.indexOf(todo): ''
+            const verifica = todo.id === props.data.id? tarefas.indexOf(todo): ''
 
             if(verifica !== ''){
                 tarefas.splice(verifica, 1)
@@ -40,6 +40,7 @@ export default function DescTask(props){
 
     function concluido(){
         const dados = {
+            id: props.data.id,
             nome: props.data.nome,
             desc: props.data.desc,
             data: props.data.data,
@@ -47,8 +48,8 @@ export default function DescTask(props){
         }
 
         const verificaIndex = tarefas.map((todo) => {
-            const verifica = todo.nome === props.data.nome? tarefas.indexOf(todo): ''
-
+            const verifica = todo.id === props.data.id? tarefas.indexOf(todo): ''
+            
             if(verifica !== ''){
                 tarefas.splice(verifica, 1)
                 tarefas.splice(verifica, 0, dados)
