@@ -14,7 +14,7 @@ export default function StyleDrawer(){
     }
 
     function LogOut(){    
-        Alert.alert('Sign Out', 'Você deseja mesmo fazer sign Out?', [
+        Alert.alert('Sign Out', 'Você deseja mesmo fazer sair da sua conta?', [
             {
                 text: 'Cancelar',
                 onPress: () => setOpcao(false)
@@ -46,7 +46,7 @@ export default function StyleDrawer(){
                 onPress={() => navigation.navigate('Home')}
             />
             <TouchableOpacity style={styles.logOut} onPress={() => LogOut()}>
-                <Text style={styles.textLogOut}>Log Out</Text>
+                <Text style={styles.textLogOut}>Sair</Text>
             </TouchableOpacity>
         </View>
     )

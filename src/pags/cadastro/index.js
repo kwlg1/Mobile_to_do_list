@@ -1,5 +1,5 @@
 import React, {useId, useState} from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert,} from 'react-native';
 import { Feather, Ionicons, EvilIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';
@@ -34,7 +34,7 @@ export default function Cadastro() {
         .catch((error) => {
           setColorBtn('#a72836')
           if( error.code === 'auth/weak-password'){
-            Alert.alert('Senha', 'sua senha precisar ter pelo menos 6 caracteres.')
+            Alert.alert('Senha', 'sua senha precisar ter, pelo menos, 6 caracteres.')
           } 
           if (error.code === 'auth/invalid-email'){
             Alert.alert('Email', 'Email incorreto!')
@@ -45,7 +45,7 @@ export default function Cadastro() {
         })  
       } else if(email === "" && senha === "" && ConfirmarSenha === ""){
         setColorBtn('#a72836')
-        Alert.alert('Dados não Inseridos', 'Você não inseriu os dados, insira os daods e tente novamente!')
+        Alert.alert('Dados não inseridos', 'Você não inseriu os dados, insira os dados e tente novamente!')
       } else {
         setColorBtn('#a72836')
         Alert.alert("Erro", "As senhas precisam ser iguais!")
@@ -67,7 +67,7 @@ export default function Cadastro() {
           <Image style={styles.logo} source={logo}></Image>
 
           <View style={styles.BoxForm}>
-          <Text style={styles.TextCadastrar}>{'Insira os dados para realizar\n seu cadstro'}</Text>
+          <Text style={styles.TextCadastrar}>{'Insira os dados para realizar\n seu cadastro'}</Text>
           
             <View style={styles.User}>
 
@@ -95,7 +95,7 @@ export default function Cadastro() {
             />
             <TouchableOpacity
               style={styles.ShowPassword}
-              onPress={() => setVerSenha(![VerSenha[0], VerSenha[1]])}
+              onPress={() => setVerSenha([!VerSenha[0], VerSenha[1]])}
             >
               <Ionicons name={VerSenha[0] === true ? 'eye' : 'eye-off'} color='#022b42' size={30} />
             </TouchableOpacity>
