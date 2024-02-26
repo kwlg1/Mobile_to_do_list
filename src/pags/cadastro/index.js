@@ -72,7 +72,7 @@ export default function Cadastro() {
             <View style={styles.User}>
 
               <Feather style={styles.IconUser} name='user' color='#022b42' size={30} />
-              <Text style={[styles.Text, { top: 30, left: 38 }]}>{email.length === 0 ? "Usuario ou Email" : ""}</Text>
+              <Text style={[styles.Text, { top: 30, left: 38 }]}>{email.length === 0 ? "Email" : ""}</Text>
               <TextInput
                 color='#022b42'
                 style={styles.Input}

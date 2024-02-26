@@ -1,5 +1,5 @@
 import React, {useId, useState} from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert  } from 'react-native';
 import { Feather, Ionicons, EvilIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';

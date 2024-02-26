@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, FlatList, Modal} from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons';
-
 import firebase from '../firebase'
 import Tasks from './task'
 import AdcionarTask from './adcionarTask'
@@ -12,12 +11,12 @@ export default function Tela() {
     const [tarefas, setTarefas] = useState()
     const user = firebase.auth().currentUser
     const navigation = useNavigation()
+    
     useEffect(() => {
       async function Pegardados(){
         await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {
           const dados = JSON.parse(snapshot.val())
           setTarefas(dados)
-
         })
       }
       Pegardados()

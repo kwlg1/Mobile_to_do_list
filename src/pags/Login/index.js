@@ -53,7 +53,7 @@ export default function Login() {
         <View style={styles.User}>
 
           <Feather style={styles.IconUser} name='user' color='#022b42' size={30} />
-          <Text style={[styles.Text, {top: 30, left: 38}]}>{Email.length === 0? "User or Email": ""}</Text>
+          <Text style={[styles.Text, {top: 30, left: 38}]}>{Email.length === 0? "Email": ""}</Text>
           <TextInput
             color='#022b42'
             style={styles.Input}

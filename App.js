@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Routes from './src/pags/routes/stack';
 import RoutesDrawer from './src/pags/routes/Drawer';
 
+
 export default function App() {
 
   const [user, setUser] = useState();
