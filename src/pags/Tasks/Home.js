@@ -11,7 +11,7 @@ export default function Tela() {
     const [tarefas, setTarefas] = useState()
     const user = firebase.auth().currentUser
     const navigation = useNavigation()
-    
+    c
     useEffect(() => {
       async function Pegardados(){
         await firebase.database().ref(`User/${user.uid}`).on('value', (snapshot) => {

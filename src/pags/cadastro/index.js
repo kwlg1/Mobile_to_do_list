@@ -1,86 +1,116 @@
-import React, {useId, useState} from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert,} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert, Animated, } from 'react-native';
 import { Feather, Ionicons, EvilIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Cadastro() {
-    
-    const logo = require('../../../assets/logo.png');
-    const [VerSenha, setVerSenha] = useState([true, true]);
-    const [ColorBtn, setColorBtn] = useState("#334f7c");
-    const [date, setDate] = useState(new Date());
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [ConfirmarSenha, setConfirmarSenha] = useState('');
-    const navigation = useNavigation();
 
-    async function CriarBanco(){
-      const tarefas = [
-        {id: Date.now() , nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adicione uma tarefa', data: `${date.getDate() <= 9 ? '0'+date.getDate() : date.getDate()} / ${date.getMonth() <= 9 ? '0'+ Number(date.getMonth()+ 1): Number(date.getMonth()+ 1)} / ${date.getFullYear()}`,concluido: false}
-      ]
-      const uid = firebase.auth().currentUser.uid
+  const logo = require('../../../assets/logo.png');
+  const [VerSenha, setVerSenha] = useState([true, true]);
+  const [ColorBtn, setColorBtn] = useState("#334f7c");
+  const [date, setDate] = useState(new Date());
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [ConfirmarSenha, setConfirmarSenha] = useState('');
+  const [heightBox, setHeightBox] = useState(new Animated.Value(0))
+  const [TopForm, setTopForm] = useState(new Animated.Value(500))
 
-      firebase.database().ref('User').child(uid)
-      firebase.database().ref("User/"+uid).set(JSON.stringify(tarefas))
-    }
-     async function fazerCadastro(){
-      if(senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== ""){
-        await firebase.auth().createUserWithEmailAndPassword(email, senha)
+  const navigation = useNavigation();
+
+  async function CriarBanco() {
+    const tarefas = [
+      { id: Date.now(), nome: 'Sem tarefas', desc: 'Ainda sem tarefas, Adicione uma tarefa', data: `${date.getDate() <= 9 ? '0' + date.getDate() : date.getDate()} / ${date.getMonth() <= 9 ? '0' + Number(date.getMonth() + 1) : Number(date.getMonth() + 1)} / ${date.getFullYear()}`, concluido: false }
+    ]
+    const uid = firebase.auth().currentUser.uid
+
+    firebase.database().ref('User').child(uid)
+    firebase.database().ref("User/" + uid).set(JSON.stringify(tarefas))
+  }
+  async function fazerCadastro() {
+    if (senha === ConfirmarSenha && senha !== "" && ConfirmarSenha !== "") {
+      await firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then(() => {
           CriarBanco()
           setColorBtn('#334f7c')
         })
         .catch((error) => {
           setColorBtn('#a72836')
-          if( error.code === 'auth/weak-password'){
+          if (error.code === 'auth/weak-password') {
             Alert.alert('Senha', 'sua senha precisar ter, pelo menos, 6 caracteres.')
-          } 
-          if (error.code === 'auth/invalid-email'){
+          }
+          if (error.code === 'auth/invalid-email') {
             Alert.alert('Email', 'Email incorreto!')
           }
-          if(error.code === 'auth/email-already-in-use' ){
+          if (error.code === 'auth/email-already-in-use') {
             Alert.alert('email', 'O endereço de email digitado já está cadastrado!')
           }
-        })  
-      } else if(email === "" && senha === "" && ConfirmarSenha === ""){
-        setColorBtn('#a72836')
-        Alert.alert('Dados não inseridos', 'Você não inseriu os dados, insira os dados e tente novamente!')
-      } else {
-        setColorBtn('#a72836')
-        Alert.alert("Erro", "As senhas precisam ser iguais!")
-      }
-
+        })
+    } else if (email === "" && senha === "" && ConfirmarSenha === "") {
+      setColorBtn('#a72836')
+      Alert.alert('Dados não inseridos', 'Você não inseriu os dados, insira os dados e tente novamente!')
+    } else {
+      setColorBtn('#a72836')
+      Alert.alert("Erro", "As senhas precisam ser iguais!")
     }
 
-    return (
-        <View style={styles.container}>
-          <StatusBar backgroundColor="#11114e" />
+  }
 
-          <TouchableOpacity
-            style={styles.SairCadastro}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name='log-out' color='#839deb' size={42} />   
-          </TouchableOpacity>
+  Animated.timing(heightBox, {
+    toValue: 500,
+    duration: 2000,
+    useNativeDriver: false
+  }).start()
 
-          <Image style={styles.logo} source={logo}></Image>
+  Animated.timing(TopForm, {
+    toValue: 0,
+    duration: 2000,
+    delay: 500,
+    useNativeDriver: false
+  }).start()
 
-          <View style={styles.BoxForm}>
-          <Text style={styles.TextCadastrar}>{'Insira os dados para realizar\n seu cadastro'}</Text>
-          
-            <View style={styles.User}>
 
-              <Feather style={styles.IconUser} name='user' color='#022b42' size={30} />
-              <Text style={[styles.Text, { top: 30, left: 38 }]}>{email.length === 0 ? "Email" : ""}</Text>
-              <TextInput
-                color='#022b42'
-                style={styles.Input}
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-              />
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#11114e" />
 
-            </View>
+      <TouchableOpacity
+        style={styles.SairCadastro}
+        onPress={() => navigation.replace('Login')}
+      >
+        <Feather name='log-out' color='#839deb' size={42} />
+      </TouchableOpacity>
+
+      <Image style={styles.logo} source={logo}></Image>
+
+      <Animated.View style={{
+        backgroundColor: '#839deb',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        height: heightBox,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+
+      }}>
+        <Text style={styles.TextCadastrar}>{'Insira os dados para realizar\n seu cadastro'}</Text>
+
+        <Animated.View style={{
+          top: TopForm,
+          alignItems: 'center'
+        }}>
+
+          <View style={styles.User}>
+
+            <Feather style={styles.IconUser} name='user' color='#022b42' size={30} />
+            <Text style={[styles.Text, { top: 30, left: 38 }]}>{email.length === 0 ? "Email" : ""}</Text>
+            <TextInput
+              color='#022b42'
+              style={styles.Input}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+
+          </View>
 
           <View style={styles.Password}>
             <EvilIcons style={styles.IconPassword} name='lock' color='#022b42' size={50} />
@@ -121,16 +151,18 @@ export default function Cadastro() {
           </View>
 
 
-            <TouchableOpacity 
-            style={[styles.btn, {backgroundColor: ColorBtn}]}
-            onPress={()=> fazerCadastro()}
-            >
-              <Text style={{color: '#fff'}}>Fazer cadastro</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[styles.btn, { backgroundColor: ColorBtn }]}
+            onPress={() => fazerCadastro()}
+          >
+            <Text style={{ color: '#fff' }}>Fazer cadastro</Text>
+          </TouchableOpacity>
 
-        </View>
-      );
+        </Animated.View>
+      </Animated.View>
+
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -139,16 +171,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: '#11114e',
   },
-  BoxForm: {
-    backgroundColor: '#839deb',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 500,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
   logo: {
-    bottom: 80,
+    position: 'absolute',
+    top: 150,
     width: 280,
     height: 90,
   },
@@ -217,4 +242,4 @@ const styles = StyleSheet.create({
     left: 10,
   }
 
- });
+});
