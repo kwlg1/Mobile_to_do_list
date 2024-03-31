@@ -32,7 +32,7 @@ export default function StyleDrawer(){
     return(
         <View style={styles.container}>
             <View style={styles.User}>
-                <EvilIcons name="user" color="#363636" size={80} style={{height:66}} />
+                <EvilIcons name="user" color="#d4d4d4" size={80} style={{height:69}} />
                 <ScrollView>
                     <Text style={styles.TextUser}>{user.email}</Text> 
                 </ScrollView>
@@ -41,8 +41,8 @@ export default function StyleDrawer(){
             <DrawerItem
                 label={() => <Text style={styles.textHome}>Home</Text>}
                 style= {styles.Home}
-                icon={() => <Ionicons name="home" color="#11114e" size={20} />}
-                pressColor='#11114e'
+                icon={() => <Ionicons name="home" color="#d4d4d4" size={20} />}
+                pressColor='#d4d4d4'
                 onPress={() => navigation.navigate('Home')}
             />
             <TouchableOpacity style={styles.logOut} onPress={() => LogOut()}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   User: {
     alignItems: 'flex-start',
     justifyContent: 'center',
-    backgroundColor: '#e2e5e8',
+    backgroundColor: '#839deb',
     borderTopLeftRadius: 10,
     borderTopRightRadius:10,
     borderBottomLeftRadius: 2,
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     marginBottom: 10,
     width: 270,
-    height: 110,
+    height: 120,
 },
 TextUser: {
-    color: '#363636',
+    color: '#d4d4d4',
     fontWeight: 'bold',
     fontSize: 16,
     marginTop: 10,
@@ -82,7 +82,7 @@ TextUser: {
 logOut: {
     position: 'absolute',
     bottom: 5,
-    backgroundColor: '#e2e5e8',
+    backgroundColor: '#839deb',
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
@@ -90,13 +90,13 @@ logOut: {
     borderRadius: 5,
 },
 textLogOut: {
-    color: '#11114e',
+    color: '#d4d4d4',
     fontSize: 16,
     fontWeight: 'bold',
 },
 Home: {
-    color: '#11114e',
-    backgroundColor: '#e2e5e8',
+    color: '#d4d4d4',
+    backgroundColor: '#839deb',
     justifyContent: 'center',
     width: 270,
     height: 40,
@@ -104,7 +104,7 @@ Home: {
     marginTop: 10,
 },
 textHome: {
-    color: '#11114e',
+    color: '#d4d4d4',
     height: 20,
     fontSize: 16,
     fontWeight: 'bold',
@@ -113,7 +113,7 @@ textHome: {
 line: {
     height: 0.5,
     width: 270,
-    backgroundColor: '#e2e5e8',
-    marginTop: 10,
+    backgroundColor: '#839deb',
+    marginTop: 0,
 }
 });

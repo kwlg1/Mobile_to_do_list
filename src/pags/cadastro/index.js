@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState,useEffect } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert, Animated, } from 'react-native';
 import { Feather, Ionicons, EvilIcons } from 'react-native-vector-icons';
 import firebase from '../firebase';
@@ -8,13 +8,17 @@ export default function Cadastro() {
 
   const logo = require('../../../assets/logo.png');
   const [VerSenha, setVerSenha] = useState([true, true]);
-  const [ColorBtn, setColorBtn] = useState("#334f7c");
+  const [ColorBtn, setColorBtn] = useState("#11114e");
   const [date, setDate] = useState(new Date());
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [ConfirmarSenha, setConfirmarSenha] = useState('');
-  const [heightBox, setHeightBox] = useState(new Animated.Value(0))
-  const [TopForm, setTopForm] = useState(new Animated.Value(500))
+  const heightBox  = useRef(new Animated.Value(0)).current
+  const TopForm = useRef(new Animated.Value(500)).current
+  const LogoAnimated = useRef(new Animated.Value(0)).current
+  const MoveLogo = useRef(new Animated.Value(0)).current
+  const OpacityAnimated = useRef(new Animated.Value(0)).current
+
 
   const navigation = useNavigation();
 
@@ -32,7 +36,7 @@ export default function Cadastro() {
       await firebase.auth().createUserWithEmailAndPassword(email, senha)
         .then(() => {
           CriarBanco()
-          setColorBtn('#334f7c')
+          setColorBtn('#11114e')
         })
         .catch((error) => {
           setColorBtn('#a72836')
@@ -56,22 +60,67 @@ export default function Cadastro() {
 
   }
 
-  Animated.timing(heightBox, {
-    toValue: 500,
-    duration: 2000,
-    useNativeDriver: false
-  }).start()
+  useEffect(() => {
+    Animated.decay(heightBox, {
+      velocity: 0.91,
+      deceleration: 0.998,
+      useNativeDriver: false
+    }).start()
 
-  Animated.timing(TopForm, {
-    toValue: 0,
-    duration: 2000,
-    delay: 500,
-    useNativeDriver: false
-  }).start()
-
+      Animated.timing(TopForm, {
+        toValue: 0,
+        duration: 2000,
+        delay: 500,
+        useNativeDriver: false
+      }).start()
+    
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(LogoAnimated, {
+            toValue: 1,
+            duration: 3000,
+            delay: 1000,
+            useNativeDriver: false
+          }),
+          Animated.decay(MoveLogo, {
+            velocity: 0.35,
+            deceleration: 0.998,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 1,
+            duration: 3000,
+            useNativeDriver: false
+          }),
+          Animated.decay(MoveLogo, {
+            velocity: -0.35,
+            deceleration: 0.998,
+            delay: 1000,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: false
+          })
+        ])
+      ).start()
+    
+      Animated.timing(OpacityAnimated, {
+        toValue: 1,
+        duration: 1500,
+        useNativeDriver: false
+      }).start()
+    
+  }, [])
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, {opacity: OpacityAnimated}]}>
       <StatusBar backgroundColor="#11114e" />
 
       <TouchableOpacity
@@ -81,7 +130,7 @@ export default function Cadastro() {
         <Feather name='log-out' color='#839deb' size={42} />
       </TouchableOpacity>
 
-      <Image style={styles.logo} source={logo}></Image>
+      <Animated.Image style={[styles.logo, { opacity: LogoAnimated, left: MoveLogo }	]} source={logo}></Animated.Image>
 
       <Animated.View style={{
         backgroundColor: '#839deb',
@@ -161,7 +210,7 @@ export default function Cadastro() {
         </Animated.View>
       </Animated.View>
 
-    </View>
+    </Animated.View>
   );
 }
 
@@ -173,9 +222,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'absolute',
-    top: 150,
-    width: 280,
-    height: 90,
+    top: 80,
+    width: 200,
+    height: 200,
   },
   Input: {
     width: 280,
@@ -185,7 +234,7 @@ const styles = StyleSheet.create({
     paddingRight: 42,
     marginBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#334f7c',
+    borderBottomColor: '#11114e',
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
 

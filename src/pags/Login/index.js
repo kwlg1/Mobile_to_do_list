@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Image, StatusBar, TextInput, TouchableOpacity, Alert, Animated } from 'react-native';
 import { Ionicons, Feather, EvilIcons } from 'react-native-vector-icons'
 import { useNavigation } from '@react-navigation/native';
@@ -10,19 +10,78 @@ export default function Login() {
   const [Email, setEmail] = useState('');
   const [Senha, setSenha] = useState('');
   const [VerSenha, setVerSenha] = useState(true);
-  const [ColorBtn, setColorBtn] = useState('#334f7c');
+  const [ColorBtn, setColorBtn] = useState('#11114e');
   const heightBox  = useRef(new Animated.Value(0)).current
   const TopForm = useRef(new Animated.Value(500)).current
   const LogoAnimated = useRef(new Animated.Value(0)).current
+  const MoveLogo = useRef(new Animated.Value(0)).current
   const OpacityAnimated = useRef(new Animated.Value(0)).current
 
   const navigation = useNavigation();
   const logo = require('../../../assets/logo.png');
 
+  useEffect(() => {
+    Animated.decay(heightBox, {
+      velocity: 0.91,
+      deceleration: 0.998,
+      useNativeDriver: false
+    }).start()
+
+      Animated.timing(TopForm, {
+        toValue: 0,
+        duration: 2000,
+        delay: 500,
+        useNativeDriver: false
+      }).start()
+      
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(LogoAnimated, {
+            toValue: 1,
+            duration: 3000,
+            delay: 1000,
+            useNativeDriver: false
+          }),
+          Animated.decay(MoveLogo, {
+            velocity: 0.35,
+            deceleration: 0.998,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 1,
+            duration: 3000,
+            useNativeDriver: false
+          }),
+          Animated.decay(MoveLogo, {
+            velocity: -0.35,
+            deceleration: 0.998,
+            delay: 1000,
+            useNativeDriver: false
+          }),
+          Animated.timing(LogoAnimated, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: false
+          })
+        ])
+      ).start()
+    
+      Animated.timing(OpacityAnimated, {
+        toValue: 1,
+        duration: 1500,
+        useNativeDriver: false
+      }).start()
+    
+  }, [])
   async function fazerLogin() {
     await firebase.auth().signInWithEmailAndPassword(Email, Senha)
       .then(() => {
-        setColorBtn("#334f7c")
+        setColorBtn("#11114e")
       })
       .catch((error) => {
         setColorBtn("#A72836")
@@ -46,45 +105,12 @@ export default function Login() {
     }
   }
 
-  Animated.decay(heightBox, {
-    velocity: 0.91,
-    deceleration: 0.998,
-    useNativeDriver: false
-  }).start()
-
-  Animated.timing(TopForm, {
-    toValue: 0,
-    duration: 2000,
-    delay: 500,
-    useNativeDriver: false
-  }).start()
-
-  Animated.timing(LogoAnimated, {
-    toValue: 1,
-    duration: 3000,
-    delay: 1600,
-    useNativeDriver: false
-  }).start()
-
-  Animated.timing(OpacityAnimated, {
-    toValue: 1,
-    duration: 1500,
-    useNativeDriver: false
-  }).start()
-
   return (
     <Animated.View style={[styles.container, {opacity: OpacityAnimated}]}>
       <StatusBar backgroundColor="#11114e" />
-      <Animated.Image style={[styles.logo, {opacity: LogoAnimated}]} source={logo} ></Animated.Image>
+      <Animated.Image style={[styles.logo, {opacity: LogoAnimated, left: MoveLogo}]} source={logo} ></Animated.Image>
 
-      <Animated.View style={{
-        backgroundColor: '#839deb',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        height: heightBox,
-      }}
+      <Animated.View style={[styles.BoxForm, {height: heightBox }]}
       >
         <Text style={styles.TextAcessar}>Acessar</Text>
 
@@ -158,11 +184,18 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: '#11114e',
   },
+  BoxForm: {
+    backgroundColor: '#839deb',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
   logo: {
     position: 'absolute',
-    top: 120,
-    width: 280,
-    height: 90,
+    top: 80,
+    width: 200,
+    height: 200,
   },
   Input: {
     width: 280,
@@ -172,7 +205,7 @@ const styles = StyleSheet.create({
     paddingRight: 42,
     marginBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#334f7c',
+    borderBottomColor: '#11114e',
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
 
@@ -180,7 +213,7 @@ const styles = StyleSheet.create({
   btn: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#334f7c',
+    backgroundColor: '#11114e',
     width: 280,
     height: 45,
     marginTop: 4,
