@@ -3,17 +3,19 @@ import { View, StyleSheet, Text, StatusBar, TouchableOpacity, FlatList, Modal, A
 import { MaterialIcons } from 'react-native-vector-icons';
 import firebase from '../firebase'
 import Tasks from './task'
-import AdcionarTask from './adcionarTask'
+import FormTask from './FormTask'
 import { useNavigation } from '@react-navigation/native';
 
 export default function Tela() {
   const [viewModal, setViewModal] = useState(false)
   const [tarefas, setTarefas] = useState()
+  const [Edit, setEdit] = useState(false)
   const user = firebase.auth().currentUser
   const navigation = useNavigation()
   const ComponentAnimated = useRef(new Animated.Value(0)).current
   const containerAnimated = useRef(new Animated.Value(0)).current
   const TextAnimated = useRef(new Animated.Value(0)).current
+  const NameAnimated = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     async function Pegardados() {
@@ -36,13 +38,35 @@ export default function Tela() {
       delay: 2500,
       useNativeDriver: false
     }).start()
-  
-    Animated.timing(TextAnimated, {
-      toValue: 1,
-      duration: 2000,
-      delay: 1000,
-      useNativeDriver: false
-    }).start()
+    
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(TextAnimated, {
+          toValue: 1,
+          duration: 3000,
+          delay: 1000,
+          useNativeDriver: false
+        }),
+        Animated.timing(TextAnimated, {
+          toValue: 0,
+          duration: 3000,
+          delay: 1000,
+          useNativeDriver: false
+        }),
+        Animated.timing(NameAnimated, {
+          toValue: 1,
+          duration: 3000,
+          delay: 1000,
+          useNativeDriver: false
+        }),
+        Animated.timing(NameAnimated, {
+          toValue: 0,
+          duration: 3000,
+          delay: 1000,
+          useNativeDriver: false
+        }),
+      ])
+    ).start()
 
   }, [])
 
@@ -60,11 +84,12 @@ export default function Tela() {
         <MaterialIcons name="menu" color="#839deb" size={30} />
       </TouchableOpacity>
       <Animated.Text style={[styles.Text, { opacity: TextAnimated }]}>Bem vindo</Animated.Text>
+      <Animated.Text style={[styles.Text, { opacity: NameAnimated, fontSize: 26, width: '92%' }]}>{user.email}</Animated.Text>
       
       <Animated.View style={[styles.viewTask, { opacity: ComponentAnimated }]}>
 
           <TouchableOpacity
-            style={styles.AdcionarTask}
+            style={styles.FormTask}
             onPress={() => setViewModal(true)}
           >
             <MaterialIcons name="add-box" color="#080740" size={100} />
@@ -75,7 +100,7 @@ export default function Tela() {
             transparent={true}
             visible={viewModal}
           >
-            <AdcionarTask fechar={() => fechar()} />
+            <FormTask fechar={() => fechar()} edit = {Edit}/>
           </Modal>
 
           <FlatList
@@ -96,11 +121,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#11114e',
   },
   Text: {
+    position: 'absolute',
     color: '#d4d4d4',
     fontSize: 35,
     fontWeight: 'bold',
     left: 20,
-    bottom: 60,
+    top: 160,
     width: 280,
     height: 90,
 
@@ -113,7 +139,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
-  AdcionarTask: {
+  FormTask: {
     marginTop: 100,
   },
   tarefas: {

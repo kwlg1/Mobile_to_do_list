@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from '../firebase'
 
 export default function Login() {
-
-
   const [Email, setEmail] = useState('');
   const [Senha, setSenha] = useState('');
   const [VerSenha, setVerSenha] = useState(true);

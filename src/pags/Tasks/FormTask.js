@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, TextInput, Alert } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons';
-import RNDateTimePicker, { DateTimePicker } from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 import firebase from '../firebase';
 
-export default function AdcionarTask(props) {
+export default function FormTask(props) {
 
     const [nome, setNome] = useState('');
     const [desc, setDesc] = useState('');
@@ -22,6 +22,13 @@ export default function AdcionarTask(props) {
             })
         }
         Pegardados()
+
+        if (props.edit === true) {
+            setNome(props.data.nome)
+            setDesc(props.data.desc)
+            setViewData(props.data.data)
+        }
+
     }, [])
 
     async function salvarTarefas() {
@@ -29,16 +36,29 @@ export default function AdcionarTask(props) {
     }
 
     function fechar() {
-        Alert.alert("Tarefa cadastrada", `Sua tarefa "${nome}" foi cadastrada\n\nDeseja adicionar outra tarefa?`, [
-            {
-                text: 'não',
-                onPress: props.fechar
-            },
-            {
-                text: 'sim',
+        if (props.edit === true) {
+            Alert.alert("Tarefa Editada", `Sua tarefa foi editada\n\nDeseja fazer outra alteração?`, [
+                {
+                    text: 'não',
+                    onPress: props.fechar
+                },
+                {
+                    text: 'sim',
 
-            }
-        ])
+                }
+            ])
+        } else {
+            Alert.alert("Tarefa cadastrada", `Sua tarefa "${nome}" foi cadastrada\n\nDeseja adicionar outra tarefa?`, [
+                {
+                    text: 'não',
+                    onPress: props.fechar
+                },
+                {
+                    text: 'sim',
+
+                }
+            ])
+        }
     }
 
     function openSetDate() {
@@ -61,6 +81,28 @@ export default function AdcionarTask(props) {
         }
     }
 
+    function Edit() {
+        const dados = {
+            id: props.data.id,
+            nome: nome,
+            desc: desc,
+            data: viewData,
+            concluido: props.data.concluido
+        }
+
+        const verificaIndex = tarefas.map((todo) => {
+            const verifica = todo.id === props.data.id ? tarefas.indexOf(todo) : ''
+
+            if (verifica !== '') {
+                tarefas.splice(verifica, 1)
+                tarefas.splice(verifica, 0, dados)
+                salvarTarefas()              
+                fechar()
+            }
+        })
+    }
+
+
     async function adcionarTarefa() {
         const dados = {
             id: Date.now(),
@@ -69,20 +111,17 @@ export default function AdcionarTask(props) {
             data: viewData,
             concluido: false
         }
-        if (tarefas.hasOwnProperty(dados.nome)) {
-            Alert.alert(`A tarefa "${nome}" já existe`)
+        if (tarefas.length === 1 && tarefas[0].nome === 'Sem tarefas') {
+            tarefas.pop()
+            tarefas.push(dados)
+            salvarTarefas()
+            fechar()
         } else {
-            if (tarefas.length === 1 && tarefas[0].nome === 'Sem tarefas') {
-                tarefas.pop()
-                tarefas.push(dados)
-                salvarTarefas()
-                fechar()
-            } else {
-                tarefas.push(dados)
-                salvarTarefas()
-                fechar()
-            }
+            tarefas.push(dados)
+            salvarTarefas()
+            fechar()
         }
+
 
     }
 
@@ -133,9 +172,9 @@ export default function AdcionarTask(props) {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.Add}
-                    onPress={() => adcionarTarefa()}
+                    onPress={props.edit === true ? Edit : adcionarTarefa}
                 >
-                    <MaterialIcons name='post-add' size={55} color='#afafc4' />
+                    <MaterialIcons name={props.edit === true ? 'edit' : 'add'} size={55} color='#afafc4' />
                 </TouchableOpacity>
             </View>
         </View>
@@ -179,4 +218,4 @@ const styles = StyleSheet.create({
     sair: {
         alignItems: 'center'
     }
-})
+});

@@ -1,20 +1,20 @@
-
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBGNH902XvAYsSLQF1g1KBM6DR7j3sz0aw",
-  authDomain: "projetotasks-aec60.firebaseapp.com",
-  projectId: "projetotasks-aec60",
-  storageBucket: "projetotasks-aec60.appspot.com",
-  messagingSenderId: "617492570740",
-  appId: "1:617492570740:web:dbbb3bca2580a8dc88e721",
-  measurementId: "G-WZC3097ZNN"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-if(!firebase.apps.length){
-  firebase.initializeApp(firebaseConfig)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
 
 export default firebase;
+
