@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Home from '../Tasks/Home'
 import StyleDrawer from '../styleDrawer';
-import Login from '../Login';
+import AtualiDados from '../atualizaDados/index';
 
 export default function RoutesDrawer(){
     const Drawer = createDrawerNavigator();
@@ -16,6 +16,7 @@ export default function RoutesDrawer(){
                 screenOptions={{headerShown: false,}}
             >
                 <Drawer.Screen name="Home" component={Home} />
+                <Drawer.Screen name='AtualiDados' component={AtualiDados} />
             </Drawer.Navigator>
         </NavigationContainer>
     )

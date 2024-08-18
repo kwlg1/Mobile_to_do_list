@@ -142,6 +142,8 @@ export default function FormTask(props) {
                     placeholderTextColor="#afafc4"
                     color='#fff'
                     value={nome}
+                    autoCapitalize='none'
+                    selectionColor='#022b42'
                     onChangeText={(text) => setNome(text)}
                 />
                 <Text style={styles.text}>Descrição</Text>
@@ -151,6 +153,8 @@ export default function FormTask(props) {
                     placeholderTextColor="#afafc4"
                     color='#fff'
                     value={desc}
+                    autoCapitalize='none'
+                    selectionColor='#022b42'
                     onChangeText={(text) => setDesc(text)}
                 />
 

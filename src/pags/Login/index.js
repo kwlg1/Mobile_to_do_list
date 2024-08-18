@@ -124,6 +124,8 @@ export default function Login() {
               color='#022b42'
               style={styles.Input}
               value={Email}
+              autoCapitalize='none'
+              selectionColor='#022b42'
               onChangeText={(text) => setEmail(text)}
             />
 
@@ -138,6 +140,8 @@ export default function Login() {
               color='#022b42'
               style={styles.Input}
               value={Senha}
+              autoCapitalize='none'
+              selectionColor='#022b42'
               onChangeText={(text) => setSenha(text)}
             />
             <TouchableOpacity
@@ -194,6 +198,7 @@ const styles = StyleSheet.create({
     top: 80,
     width: 200,
     height: 200,
+    marginLeft: 5
   },
   Input: {
     width: 280,

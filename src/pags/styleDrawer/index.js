@@ -4,6 +4,7 @@ import { EvilIcons, Ionicons } from 'react-native-vector-icons';
 import firebase from '../firebase'
 import { DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
+import { BounceInDown } from 'react-native-reanimated';
 
 export default function StyleDrawer(){
     const user = firebase.auth().currentUser
@@ -39,11 +40,17 @@ export default function StyleDrawer(){
             </View>
             <View style={styles.line}></View>
             <DrawerItem
-                label={() => <Text style={styles.textHome}>Home</Text>}
-                style= {styles.Home}
+                label={() => <Text style={styles.text}>Box</Text>}
+                style= {styles.Box}
                 icon={() => <Ionicons name="home" color="#d4d4d4" size={20} />}
                 pressColor='#d4d4d4'
                 onPress={() => navigation.navigate('Home')}
+            />
+            <DrawerItem
+                label={() => <Text style={[styles.text, {marginLeft: -5}]}>Atualização de dados</Text>}
+                style={styles.Box}
+                icon={() => <EvilIcons name='user' color='#d4d4d4' size={28} style={{marginLeft: -2}} />}
+                onPress={() => navigation.navigate('AtualiDados')}
             />
             <TouchableOpacity style={styles.logOut} onPress={() => LogOut()}>
                 <Text style={styles.textLogOut}>Sair</Text>
@@ -94,7 +101,7 @@ textLogOut: {
     fontSize: 16,
     fontWeight: 'bold',
 },
-Home: {
+Box: {
     color: '#d4d4d4',
     backgroundColor: '#839deb',
     justifyContent: 'center',
@@ -103,7 +110,7 @@ Home: {
     borderRadius: 5,
     marginTop: 10,
 },
-textHome: {
+text: {
     color: '#d4d4d4',
     height: 20,
     fontSize: 16,

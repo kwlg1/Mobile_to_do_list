@@ -127,7 +127,7 @@ export default function Cadastro() {
         style={styles.SairCadastro}
         onPress={() => navigation.replace('Login')}
       >
-        <Feather name='log-out' color='#839deb' size={42} />
+        <Feather name='log-out' color='#839deb' size={38} />
       </TouchableOpacity>
 
       <Animated.Image style={[styles.logo, { opacity: LogoAnimated, left: MoveLogo }	]} source={logo}></Animated.Image>
@@ -156,6 +156,8 @@ export default function Cadastro() {
               color='#022b42'
               style={styles.Input}
               value={email}
+              autoCapitalize='none'
+              selectionColor='#022b42'
               onChangeText={(text) => setEmail(text)}
             />
 
@@ -170,7 +172,9 @@ export default function Cadastro() {
               color='#022b42'
               style={styles.Input}
               value={senha}
+              selectionColor='#022b42'
               onChangeText={(text) => setSenha(text)}
+              autoCapitalize='none'
             />
             <TouchableOpacity
               style={styles.ShowPassword}
@@ -189,6 +193,8 @@ export default function Cadastro() {
               color='#022b42'
               style={styles.Input}
               value={ConfirmarSenha}
+              autoCapitalize='none'
+              selectionColor='#022b42'
               onChangeText={(text) => setConfirmarSenha(text)}
             />
             <TouchableOpacity
@@ -225,6 +231,7 @@ const styles = StyleSheet.create({
     top: 80,
     width: 200,
     height: 200,
+    marginLeft: 5
   },
   Input: {
     width: 280,
@@ -287,7 +294,7 @@ const styles = StyleSheet.create({
   },
   SairCadastro: {
     position: 'absolute',
-    top: 15,
+    top: 20,
     left: 10,
   }
 
